@@ -46,6 +46,8 @@ bool setSecondWindowDimensions(ofGLFWWindowSettings& settings) {
 
 //========================================================================
 int main() {
+	ofSetLogLevel(OF_LOG_VERBOSE);
+	
 	ofGLFWWindowSettings settings;
 	settings.width = 1200;
 	settings.height = 600;

@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #include "KinectProjector.h"
 
+#include "ofImage.h"
+
 using namespace ofxCSG;
 
 KinectProjector::KinectProjector(std::shared_ptr<ofAppBaseWindow> const& p)
@@ -347,6 +349,9 @@ void KinectProjector::updateROIFromDepthImage(){
         temp.setNativeScale(FilteredDepthImage.getNativeScaleMin(), FilteredDepthImage.getNativeScaleMax());
         temp.convertToRange(0, 1);
         thresholdedImage.setFromPixels(temp.getFloatPixelsRef());
+        ofLogVerbose("KinectProjector") << "Saving thresholded image to " << ofToDataPath("thresholdedImage.bmp");
+        cv::Mat thresIm = ofxCv::toCv(thresholdedImage.getPixels());
+        ofxCv::saveImage(thresIm, "thresholdedImage.bmp");
         threshold = 0; // We go from the higher distance to the kinect (lower position) to the lower distance
     } else if (ROICalibState == ROI_CALIBRATION_STATE_MOVE_UP) {
         while (threshold < 255){
@@ -890,6 +895,7 @@ void KinectProjector::setupGui(){
     advancedFolder->addSlider("Averaging", 1, 40, numAveragingSlots)->setPrecision(0);
     advancedFolder->addBreak();
     advancedFolder->addButton("Calibrate")->setName("Full Calibration");
+    advancedFolder->addButton("Print depth map")->setName("Print Depth Map");
 //	advancedFolder->addButton("Update ROI from calibration");
 //    gui->addButton("Automatically detect sand region");
 //    calibrationFolder->addButton("Manually define sand region");
@@ -975,6 +981,11 @@ void KinectProjector::onButtonEvent(ofxDatGuiButtonEvent e){
         basePlaneOffset = basePlaneOffsetBack;
         basePlaneEq = getPlaneEquation(basePlaneOffset,basePlaneNormal);
         basePlaneUpdated = true;
+    }
+    else if (e.target->is("Print Depth Map"))
+    {
+        //ofxCvGrayscaleImage grayDepthImage = FilteredDepthImage;
+        ofLogVerbose("KinectProjector") << ofxCv::toCv(FilteredDepthImage);
     }
 }
 
