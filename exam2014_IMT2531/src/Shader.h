@@ -7,7 +7,7 @@
 #include <map>
 
 #define GLEW_STATIC //Use static version
-#include "D:\git\openFrameworks\libs\glew\include\GL\glew.h"
+#include "GL/glew.h"
 
 class Shader
 {

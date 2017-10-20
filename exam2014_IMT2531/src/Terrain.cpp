@@ -250,7 +250,7 @@ GLboolean Terrain::ComputeTerrain(const GLfloat &waterLevel, const GLfloat &zMod
 		for (GLuint x = 0; x < this->mapWidth; x++)
 		{
 			//Compute height
-			GLfloat height = max(heightMap[y * this->mapWidth + x] - waterLevel * this->maxHeight, 0.0f) * (zMod / this->maxHeight);
+			GLfloat height = glm::max(heightMap[y * this->mapWidth + x] - waterLevel * this->maxHeight, 0.0f) * (zMod / this->maxHeight);
 
 			//Insert vertex
 			vertices[y * this->mapWidth * 3 + x * 3]		= x - this->mapWidth / 2.0f;
@@ -300,7 +300,7 @@ GLboolean Terrain::ComputeTerrain(const GLfloat &waterLevel, const GLfloat &zMod
 		this->mesh->UpdateIndices(indices, (this->mapWidth - 1) * (this->mapHeight - 1) * 6);
 
 		//Clean up buffer
-		delete indices;
+		delete[] indices;
 		indices = NULL;
 
 		//Unflag fullUpdate

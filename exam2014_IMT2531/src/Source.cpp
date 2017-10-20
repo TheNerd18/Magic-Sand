@@ -8,8 +8,8 @@
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "glu32.lib")
 
-#include <SDKDDKVer.h>
-#include <SDL.h>
+// #include <SDKDDKVer.h>
+#include <SDL2/SDL.h>
 
 #include "Common.h"
 #include "Shader.h"
@@ -357,7 +357,7 @@ bool initGL()
 		}
 		else
 		{
-			printf("#ERROR: Unrecognized file type %s!\n", gHeightmap.substr(gHeightmap.find_last_of('.')));
+			printf("#ERROR: Unrecognized file type %s!\n", gHeightmap.substr(gHeightmap.find_last_of('.')).c_str());
 
 			getchar();
 
@@ -561,7 +561,7 @@ void update(GLfloat dt)
 		GLfloat h = gTerrain->SampleHeight(pos.x, pos.z);
 
 		//Set new camera height
-		pos.y = max(h - gWaterLevel, 0.0f) * gTerrainHeight + 10.0f;
+		pos.y = glm::max(h - gWaterLevel, 0.0f) * gTerrainHeight + 10.0f;
 		gCamera->SetPosition(pos);
 	}
 
