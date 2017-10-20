@@ -1,0 +1,33 @@
+#version 330 core
+
+//Author: Bendik Hillestad, 131333
+//EXAM 2014
+
+
+uniform vec3	LightDir;
+uniform float	MaxZ;
+
+in float	height;
+in vec3		worldNormal;
+
+out vec4 colour;
+
+void main()
+{
+	//vec3 scattering = vec3(5.8E-6, 13.5E-6, 33.1E-6);
+	vec3 lightColor = vec3(1, 1, 1);// - 6.0E4 * scattering;
+
+	vec3 norm	= normalize(worldNormal);
+	vec3 light	= normalize(LightDir);
+	float l		= clamp(dot(norm, -light), 0, 1);
+
+	vec4 base;
+
+	float h = height / MaxZ;
+
+	if (h > 0.9) base = mix(vec4(0.6, 0.6, 0.6, 1), vec4(1, 1, 1, 1), pow((h - 0.9) / 0.1, 0.5));
+	else if (h <= 0.001) base = vec4(0, 0, 1, 1);
+	else base = mix(vec4(0.6, 1, 0.4, 1), vec4(0.6, 0.6, 0.6, 1), pow(h / 0.9, 0.5));
+
+	colour = vec4(l * lightColor * base.xyz, 1);
+}

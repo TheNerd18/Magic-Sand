@@ -1,0 +1,38 @@
+#version 330 core
+
+//Author: Bendik Hillestad, 131333
+//EXAM 2014
+
+uniform vec2 Sun;
+
+in vec3 worldPos;
+
+out vec4 colour;
+
+void main()
+{
+	vec3 dir = normalize(worldPos);
+
+	vec3 sunPos = vec3(
+		cos(Sun.y) * cos(Sun.x),
+		sin(Sun.y),
+		cos(Sun.y) * sin(Sun.x)
+	);
+
+	vec2 polCoords = vec2(atan(dir.z, dir.x), asin(dir.y));
+
+	vec3 skyPos = vec3(
+		cos(polCoords.y) * cos(polCoords.x),
+		sin(polCoords.y),
+		cos(polCoords.y) * sin(polCoords.x)
+	);
+
+	float angDist	= acos(dot(sunPos, skyPos)) / 3.141593;
+	float zenith	= acos(dir.y) / 1.57;
+
+	//!!HEAVILY SIMPLIFIED!! rayleigh + mie scattering.
+	vec3 rayleigh	= mix(vec3(0.1, 0.2, 0.35), vec3(0.3, 0.4, 0.55), clamp(pow(zenith, 4), 0, 1)) * clamp(sunPos.y + 0.4, 0, 1);
+	vec3 mie		= vec3(0.9, 0.85, 0.78) * clamp(pow(1 - angDist, 16) * 1.4, 0, 1);
+
+	colour = vec4(rayleigh + mie, 1);
+}
