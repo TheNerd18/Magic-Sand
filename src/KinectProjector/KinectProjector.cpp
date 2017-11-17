@@ -1248,6 +1248,26 @@ void KinectProjector::drawChessboard(int x, int y, int chessboardSize) {
     fboProjWindow.end();
 }
 
+void KinectProjector::drawCrosshair(int x, int y, int crosshairSize)
+{
+    fboProjWindow.begin();
+    ofFill();
+    
+    float xf = x-crosshairSize/2; // x and y are chess board center size
+    float yf = y-crosshairSize/2;
+    
+    ofClear(0, 0, 0, 0);
+    ofBackground(0); 
+    ofSetColor(0, 255, 0);
+    ofTranslate(xf, yf);
+
+    // Horizontal line
+    ofLine(xf, y, xf+crosshairSize, y);
+    ofLine(x, yf, x, yf+crosshairSize);
+    
+    fboProjWindow.end();
+}
+
 void KinectProjector::drawGradField()
 {
     ofClear(255, 0);

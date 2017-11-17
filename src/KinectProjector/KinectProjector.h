@@ -243,6 +243,7 @@ private:
     void askToFlattenSand();
 
     void drawChessboard(int x, int y, int chessboardSize);
+    void drawCrosshair(int x, int y, int crosshairSize);
     void drawArrow(ofVec2f projectedPoint, ofVec2f v1);
 
     void saveCalibrationAndSettings();
