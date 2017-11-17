@@ -89,9 +89,20 @@ int main() {
 	shared_ptr<ofAppBaseWindow> secondWindow = ofCreateWindow(settings);
 	secondWindow->setVerticalSync(false);
 
+	setWindowDimensions(settings, 2);
+	settings.width = 400; // Default settings
+    settings.height = 200;
+	settings.resizable = true;
+	settings.decorated = true;
+	settings.shareContextWith = mainWindow;
+	shared_ptr<ofAppBaseWindow> thirdWindow = ofCreateWindow(settings);
+	secondWindow->setVerticalSync(true);
+
 	shared_ptr<ofApp> mainApp(new ofApp);
 	ofAddListener(secondWindow->events().draw, mainApp.get(), &ofApp::drawProjWindow);
+	ofAddListener(thirdWindow->events().draw, mainApp.get(), &ofApp::drawExtraWindow);
 	mainApp->projWindow = secondWindow;
+	mainApp->extraWindow = thirdWindow;
 		
 	ofRunApp(mainWindow, mainApp);
 	ofRunMainLoop();

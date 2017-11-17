@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "ofMain.h"
 #include "../KinectProjector/KinectProjector.h"
 #include "ColorMap.h"
+#include "ofxTexture3d.h"
 
 
 class SaveModal : public ofxModalWindow
@@ -64,13 +65,15 @@ private:
 
 class SandSurfaceRenderer {
 public:
-    SandSurfaceRenderer(std::shared_ptr<KinectProjector> const& k, std::shared_ptr<ofAppBaseWindow> const& p);
+    SandSurfaceRenderer(std::shared_ptr<KinectProjector> const& k, std::shared_ptr<ofAppBaseWindow> const& p,
+        std::shared_ptr<ofAppBaseWindow> const& e);
     
     // Main loop function
     void setup(bool sdisplayGui);
     void update();
     void drawMainWindow(float x, float y, float width, float height);
     void drawProjectorWindow();
+    void drawExtraWindow();
     
     // Gui and events functions
     void setupGui();
@@ -98,10 +101,12 @@ private:
     // shared pointers
     std::shared_ptr<KinectProjector> kinectProjector;
     std::shared_ptr<ofAppBaseWindow> projWindow;
+    std::shared_ptr<ofAppBaseWindow> extraWindow;
     bool settingsLoaded;
     
     // Projector Resolution
     int projResX, projResY;
+    int extraResX, extraResY;
 	ofRectangle kinectROI;
 
     // Conversion matrices
@@ -116,10 +121,12 @@ private:
     // Shaders
     ofShader elevationShader;
     ofShader heightMapShader;
+    ofShader colour3dTextureShader;
     
     // FBos
     ofFbo   fboProjWindow;    
     ofFbo   contourLineFramebufferObject;
+    ofFbo   fbo3dTextureTestWindow;
 
     // Base plane
     ofVec3f basePlaneNormal, basePlaneNormalBack;
@@ -137,6 +144,8 @@ private:
     float contourLineFboScale, contourLineFboOffset; // Scale and offset values to convert depth from contourline shader values to real values
 	float FilteredDepthScale,FilteredDepthOffset; // Scale and offset values to convert depth from normalized shader values to real values
     float elevationMin, elevationMax;
+    
+    ofxTexture3d colourTexture;
     
     // Contourlines
     float contourLineDistance, contourLineFactor;

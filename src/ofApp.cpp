@@ -37,12 +37,13 @@ void ofApp::setup() {
 	kinectProjector->setup(true);
 	
 	// Setup sandSurfaceRenderer
-	sandSurfaceRenderer = new SandSurfaceRenderer(kinectProjector, projWindow);
+	sandSurfaceRenderer = new SandSurfaceRenderer(kinectProjector, projWindow, extraWindow);
 	sandSurfaceRenderer->setup(true);
 	
 	// Retrieve variables
 	ofVec2f kinectRes = kinectProjector->getKinectRes();
 	ofVec2f projRes = ofVec2f(projWindow->getWidth(), projWindow->getHeight());
+	ofVec2f extraRes = ofVec2f(extraWindow->getWidth(), extraWindow->getHeight());
 	ofRectangle kinectROI = kinectProjector->getKinectROI();
 	////mainWindowROI = ofRectangle(600, 30, 600, 450);
 	//mainWindowROI = ofRectangle(0, 0, 640, 480);
@@ -104,6 +105,14 @@ void ofApp::drawProjWindow(ofEventArgs &args)
 		boidGameController.drawProjectorWindow();
 	}
 	kinectProjector->drawProjectorWindow();
+}
+
+void ofApp::drawExtraWindow(ofEventArgs &args) 
+{
+	if (kinectProjector->GetApplicationState() == KinectProjector::APPLICATION_STATE_RUNNING)
+	{
+		sandSurfaceRenderer->drawExtraWindow();
+	}
 }
 
 void ofApp::keyPressed(int key) 
