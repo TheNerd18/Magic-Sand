@@ -799,14 +799,13 @@ void KinectProjector::updateProjKinectAutoCalibration()
         autoCalibPts[2] = ofPoint(projRes.x-cs, projRes.y-cs) - sc; // Lower right
         autoCalibPts[3] = ofPoint(          cs, projRes.y-cs) - sc; // Lower left
         autoCalibPts[4] = ofPoint(          cs,           cs)  -sc; // upper left 
-        autoCalibPts[5] = ofPoint(0         ,0);                    // Center
-        autoCalibPts[6] = ofPoint(projRes.x-css,         css) - sc; // upper right
-        autoCalibPts[7] = ofPoint(projRes.x-css,projRes.y-css) -sc; // Lower right
-        autoCalibPts[8] = ofPoint(css          ,projRes.y-css) -sc; // Lower left
-        autoCalibPts[9] = ofPoint(css,                    css) - sc; // upper left 
+        autoCalibPts[5] = ofPoint(0.5*css         , 0.5*css);                    // Center
+        autoCalibPts[6] = ofPoint(projRes.x-0.5*css,         0.5*css) - sc; // upper right
+        autoCalibPts[7] = ofPoint(projRes.x-0.5*css,projRes.y-0.5*css) -sc; // Lower right
+        autoCalibPts[8] = ofPoint(0.5*css          ,projRes.y-0.5*css) -sc; // Lower left
+        autoCalibPts[9] = ofPoint(0.5*css,                    0.5*css) - sc; // upper left 
 
 		currentCalibPts = 0;
-        upframe = false;
         trials = 0;
 		TemporalFrameCounter = 0;
 
@@ -935,18 +934,10 @@ double KinectProjector::ComputeReprojectionError(bool WriteFile)
 
 void KinectProjector::CalibrateNextPoint()
 {
-	if (currentCalibPts < 5 || (upframe && currentCalibPts < 10))
+	if (currentCalibPts < 10)
 	{
-		if (!upframe)
-		{
-			calibrationText = "Calibration (low) # " + std::to_string(currentCalibPts + 1) + "/5";
-			updateStatusGUI();
-		}
-		else
-		{
-			calibrationText = "Calibration (high) #  " + std::to_string(currentCalibPts - 4) + "/5";
-			updateStatusGUI();
-		}
+		calibrationText = "Calibration # " + std::to_string(currentCalibPts + 1) + "/10";
+		updateStatusGUI();
 
 		// Current RGB frame - probably with rolling shutter problems
 		cvRgbImage = ofxCv::toCv(kinectColorImage.getPixels());
@@ -1053,19 +1044,11 @@ void KinectProjector::CalibrateNextPoint()
 	}
 	else
 	{
-		if (upframe)
-		{ // We are done
-			calibrationText = "Updating acquisition ceiling";
-			updateMaxOffset(); // Find max offset
-			autoCalibState = AUTOCALIB_STATE_COMPUTE;
-			updateStatusGUI();
-		}
-		else
-		{ // We ask for higher points
-			calibModal->hide();
-			confirmModal->show();
-			confirmModal->setMessage("Please cover the sandbox with a board and press ok.");
-		}
+		// We are done
+		calibrationText = "Updating acquisition ceiling";
+		updateMaxOffset(); // Find max offset
+		autoCalibState = AUTOCALIB_STATE_COMPUTE;
+		updateStatusGUI();
 	}
 }
 
@@ -1806,14 +1789,6 @@ void KinectProjector::onConfirmModalEvent(ofxModalEvent e)
             if (waitingForFlattenSand)
 			{
                 waitingForFlattenSand = false;
-            }  
-			else if ((calibrationState == CALIBRATION_STATE_PROJ_KINECT_AUTO_CALIBRATION || (calibrationState == CALIBRATION_STATE_FULL_AUTO_CALIBRATION && fullCalibState == FULL_CALIBRATION_STATE_AUTOCALIB))
-                        && autoCalibState == AUTOCALIB_STATE_NEXT_POINT)
-			{
-                if (!upframe)
-				{
-                    upframe = true;
-                }
             }
         }
         ofLogVerbose("KinectProjector") << "Modal confirm button pressed" ;
