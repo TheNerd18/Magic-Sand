@@ -344,7 +344,6 @@ private:
     ofPoint* autoCalibPts; // Center of autocalib chess boards
     int currentCalibPts;
     int trials;
-    bool upframe;
 
 	// Temporal frame filter for cleaning the colour image used for calibration. It should probably be moved to the grabber class/thread
 	CTemporalFrameFilter TemporalFrameFilter;
