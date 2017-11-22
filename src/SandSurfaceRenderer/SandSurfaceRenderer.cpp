@@ -314,7 +314,7 @@ void SandSurfaceRenderer::drawProjectorWindow(){
 }
 
 void SandSurfaceRenderer::drawExtraWindow(){
-    fbo3dTextureTestWindow.draw(0,0,extraWindow->getWidth(), extraWindow->getHeight());
+    fbo3dTextureTestWindow.draw(-kinectROI.x,-kinectROI.y,extraWindow->getWidth(), extraWindow->getHeight());
     //fboProjWindow.draw(0,0, extraResX, extraResY);
 }
 
