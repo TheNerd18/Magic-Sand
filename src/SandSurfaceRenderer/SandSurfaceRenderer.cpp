@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #include "SandSurfaceRenderer.h"
 
+#include "ofxImageSequencePlayer.h"
+
 using namespace ofxCSG;
 
 SandSurfaceRenderer::SandSurfaceRenderer(std::shared_ptr<KinectProjector> const& k,
@@ -62,6 +64,60 @@ void SandSurfaceRenderer::setup(bool sdisplayGui){
     } else {
         ofLogVerbose("SandSurfaceRenderer") << "SandSurfaceRenderer.setup(): sandSurfaceRendererSettings.xml could not be loaded " ;
     }
+
+    ofEnableArbTex(); // tex coords from 0 - imagewidth
+
+    ofxImageSequencePlayer imageSequence;
+    
+    imageSequence.init("colour_texture_split/colour_text",3,".tif", 0);
+    int volWidth = imageSequence.getWidth();
+    int volHeight = imageSequence.getHeight();
+    int volDepth = imageSequence.getSequenceLength();
+
+    cout << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth <<"\n";
+
+    unsigned char *volumeData = new unsigned char[volWidth*volHeight*volDepth*4];
+
+    // Read image slices in as 3D texture data    
+    for(int z=0; z<volDepth; z++)
+    {
+        imageSequence.loadFrame(z);
+
+        for(int x=0; x<volWidth; x++)
+        {
+            for(int y=0; y<volHeight; y++)
+            {
+                // convert from greyscale to RGBA, false color
+                int i4 = ((x+volWidth*y)+z*volWidth*volHeight)*4;
+                ofColor c = imageSequence.getPixels().getColor(x, y);
+
+                volumeData[i4] = c.r;
+                volumeData[i4+1] = c.g;
+                volumeData[i4+2] = c.b;
+                volumeData[i4+3] = 255;
+            }
+        }
+    }
+
+    colourTexture.allocate(volWidth, volHeight, volDepth, GL_RGBA);
+    colourTexture.loadData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0, GL_RGBA);
+
+    fbo3dTextureTestWindow.allocate(extraResX, extraResY, GL_RGBA);
+    fbo3dTextureTestWindow.begin();
+    // Bind the 3D texture and set the sampler variable in the fragment shader
+    glActiveTextureARB(GL_TEXTURE1);
+    ofxTextureData3d texture_data = colourTexture.getTextureData();
+    if (!ofIsGLProgrammableRenderer()){
+        glEnable(texture_data.textureTarget);
+        glBindTexture(texture_data.textureTarget, texture_data.textureID);
+
+        glDisable(texture_data.textureTarget);
+    } else {
+        glBindTexture(texture_data.textureTarget, texture_data.textureID);
+
+    }
+    glActiveTextureARB(GL_TEXTURE0);
+    fbo3dTextureTestWindow.begin();
 
     // Load colormap folder and set heightmap
     colorMapPath = "colorMaps/";
@@ -129,6 +185,8 @@ void SandSurfaceRenderer::setup(bool sdisplayGui){
         ofLogVerbose("SandSurfaceRenderer") << "setup(): Loading shadersGL2/heightMapShader";
 		loaded = loaded && heightMapShader.load("shaders/shadersGL2/heightMapShader");
 	}
+
+    loaded = loaded && colour3dTextureShader.load("shaders/3dcolourtexture");
 #endif
     if (!loaded)
     {
@@ -256,8 +314,8 @@ void SandSurfaceRenderer::drawProjectorWindow(){
 }
 
 void SandSurfaceRenderer::drawExtraWindow(){
-    //fbo3dTextureTestWindow.draw(0,0);
-    fboProjWindow.draw(0,0, extraResX, extraResY);
+    fbo3dTextureTestWindow.draw(0,0,extraWindow->getWidth(), extraWindow->getHeight());
+    //fboProjWindow.draw(0,0, extraResX, extraResY);
 }
 
 void SandSurfaceRenderer::drawSandbox() {
@@ -281,16 +339,16 @@ void SandSurfaceRenderer::drawSandbox() {
 
     fbo3dTextureTestWindow.begin();
     ofBackground(0);
-    //kinectProjector->bind();
-    //colour3dTextureShader.begin();
-    //colour3dTextureShader.setUniform1i("myTexture", 1);
-    //// colour3dTextureShader.setUniformTexture("tex0",depthImage.getTexture(), 2);    // Fails when bound to 0
-    //colour3dTextureShader.setUniform1f("maxHeight", heightMapScale);
-    //colour3dTextureShader.setUniform2f("meshDim", kinectROI.width, kinectROI.height);
-    //
-    //mesh.draw();
-    //colour3dTextureShader.end();
-    //kinectProjector->unbind();
+    kinectProjector->bind();
+    colour3dTextureShader.begin();
+    colour3dTextureShader.setUniform1i("myTexture", 1);
+    // colour3dTextureShader.setUniformTexture("tex0",depthImage.getTexture(), 2);    // Fails when bound to 0
+    colour3dTextureShader.setUniform1f("maxHeight", heightMapScale);
+    colour3dTextureShader.setUniform2f("meshDim", kinectROI.width, kinectROI.height);
+    
+    mesh.draw();
+    colour3dTextureShader.end();
+    kinectProjector->unbind();
     fbo3dTextureTestWindow.end();
 }
 

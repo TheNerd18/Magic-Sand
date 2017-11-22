@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "ofMain.h"
 #include "../KinectProjector/KinectProjector.h"
 #include "ColorMap.h"
+#include "ofxTexture3d.h"
 
 
 class SaveModal : public ofxModalWindow
@@ -120,6 +121,7 @@ private:
     // Shaders
     ofShader elevationShader;
     ofShader heightMapShader;
+    ofShader colour3dTextureShader;
     
     // FBos
     ofFbo   fboProjWindow;    
@@ -142,6 +144,8 @@ private:
     float contourLineFboScale, contourLineFboOffset; // Scale and offset values to convert depth from contourline shader values to real values
 	float FilteredDepthScale,FilteredDepthOffset; // Scale and offset values to convert depth from normalized shader values to real values
     float elevationMin, elevationMax;
+    
+    ofxTexture3d colourTexture;
     
     // Contourlines
     float contourLineDistance, contourLineFactor;

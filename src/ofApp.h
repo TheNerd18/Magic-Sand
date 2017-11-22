@@ -55,6 +55,8 @@ public:
 	std::shared_ptr<ofAppBaseWindow> extraWindow;
 
 private:
+    ofxTexture3d colourTexture;
+
 	std::shared_ptr<KinectProjector> kinectProjector;
 	SandSurfaceRenderer* sandSurfaceRenderer;
 	CMapGameController mapGameController;
