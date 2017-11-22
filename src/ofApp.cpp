@@ -135,6 +135,7 @@ void ofApp::keyPressed(int key)
 		{
 			// Try to start the application
 			kinectProjector->startApplication();
+			sandSurfaceRenderer->update();
 		}
 	}
 	else if (key == 'f' || key == 'r')
