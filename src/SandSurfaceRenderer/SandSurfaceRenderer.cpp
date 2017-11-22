@@ -27,11 +27,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 using namespace ofxCSG;
 
-SandSurfaceRenderer::SandSurfaceRenderer(std::shared_ptr<KinectProjector> const& k, std::shared_ptr<ofAppBaseWindow> const& p)
+SandSurfaceRenderer::SandSurfaceRenderer(std::shared_ptr<KinectProjector> const& k,
+    std::shared_ptr<ofAppBaseWindow> const& p,
+    std::shared_ptr<ofAppBaseWindow> const& e)
 :settingsLoaded(false),
 editColorMap(false){
     kinectProjector = k;
     projWindow = p;
+    extraWindow = e;
 }
 
 void SandSurfaceRenderer::setup(bool sdisplayGui){
@@ -44,6 +47,8 @@ void SandSurfaceRenderer::setup(bool sdisplayGui){
     // Initialize the fbos and images
     projResX = projWindow->getWidth();
     projResY = projWindow->getHeight();
+    extraResX = extraWindow->getWidth();
+    extraResY = extraWindow->getHeight();
     contourLineFramebufferObject.allocate(projResX+1, projResY+1, GL_RGBA);
     contourLineFramebufferObject.begin();
     ofClear(0,0,0,255);
@@ -247,7 +252,12 @@ void SandSurfaceRenderer::drawMainWindow(float x, float y, float width, float he
 }
 
 void SandSurfaceRenderer::drawProjectorWindow(){
-	fboProjWindow.draw(0,0);
+    fboProjWindow.draw(0,0);
+}
+
+void SandSurfaceRenderer::drawExtraWindow(){
+    //fbo3dTextureTestWindow.draw(0,0);
+    fboProjWindow.draw(0,0, extraResX, extraResY);
 }
 
 void SandSurfaceRenderer::drawSandbox() {
@@ -268,6 +278,20 @@ void SandSurfaceRenderer::drawSandbox() {
     heightMapShader.end();
     kinectProjector->unbind();
     fboProjWindow.end();
+
+    fbo3dTextureTestWindow.begin();
+    ofBackground(0);
+    //kinectProjector->bind();
+    //colour3dTextureShader.begin();
+    //colour3dTextureShader.setUniform1i("myTexture", 1);
+    //// colour3dTextureShader.setUniformTexture("tex0",depthImage.getTexture(), 2);    // Fails when bound to 0
+    //colour3dTextureShader.setUniform1f("maxHeight", heightMapScale);
+    //colour3dTextureShader.setUniform2f("meshDim", kinectROI.width, kinectROI.height);
+    //
+    //mesh.draw();
+    //colour3dTextureShader.end();
+    //kinectProjector->unbind();
+    fbo3dTextureTestWindow.end();
 }
 
 void SandSurfaceRenderer::prepareContourLinesFbo()

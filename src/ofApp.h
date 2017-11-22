@@ -37,6 +37,7 @@ public:
 
 	void draw();
 	void drawProjWindow(ofEventArgs& args);
+	void drawExtraWindow(ofEventArgs& args);
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -51,6 +52,7 @@ public:
 	void gotMessage(ofMessage msg);
 
 	std::shared_ptr<ofAppBaseWindow> projWindow;
+	std::shared_ptr<ofAppBaseWindow> extraWindow;
 
 private:
 	std::shared_ptr<KinectProjector> kinectProjector;
