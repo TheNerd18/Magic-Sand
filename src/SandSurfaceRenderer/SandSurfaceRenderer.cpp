@@ -314,10 +314,7 @@ void SandSurfaceRenderer::drawProjectorWindow(){
 }
 
 void SandSurfaceRenderer::drawExtraWindow(){
-    //fbo3dTextureTestWindow.draw(0, 0, extraWindow->getWidth(), extraWindow->getHeight());
-    //fbo3dTextureTestWindow.draw(0, 0, projResX, projResY);
-    fbo3dTextureTestWindow.draw(0,0, extraResX, extraResY);
-    //fbo3dTextureTestWindow.draw(0, 0);
+    fbo3dTextureTestWindow.draw(0,0, extraWindow->getWidth()*projResX/meshwidth, extraWindow->getHeight()*projResY/meshheight);
 }
 
 void SandSurfaceRenderer::drawSandbox() {
@@ -350,8 +347,8 @@ void SandSurfaceRenderer::drawSandbox() {
     colour3dTextureShader.setUniform2f("heightColorMapTransformation",ofVec2f(heightMapScale,heightMapOffset));
     colour3dTextureShader.setUniform2f("depthTransformation",ofVec2f(FilteredDepthScale,FilteredDepthOffset));
     colour3dTextureShader.setUniform4f("basePlaneEq", basePlaneEq);
-    colour3dTextureShader.setUniform2f("meshOffset", ofVec2f(kinectROI.x, kinectROI.y));//kinectProjector->getMaxOffset());
-    colour3dTextureShader.setUniform1f("maxHeight", elevationMax - elevationMin);//kinectProjector->getMaxOffset());
+    colour3dTextureShader.setUniform2f("meshOffset", ofVec2f(kinectROI.x, kinectROI.y));
+    colour3dTextureShader.setUniform1f("maxHeight", elevationMax);  // Do we need to subtract elevationMin?
     colour3dTextureShader.setUniform2f("meshDim", meshwidth, meshheight);
     
     mesh.draw();

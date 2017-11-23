@@ -43,7 +43,7 @@ void main() {
     projectedPoint.z = 0;
     projectedPoint.w = 1;
     
-    gl_Position = gl_ModelViewProjectionMatrix * projectedPoint;
+    gl_Position = gl_ModelViewProjectionMatrix * (vec4(meshDim.x, meshDim.y, 0.0, 2*position.w) - (position - vec4(meshOffset.x, meshOffset.y, 0, 0)));
     
     gl_TexCoord[0].z = (elevation * heightColorMapTransformation.x + heightColorMapTransformation.y) / (maxHeight);
 }
