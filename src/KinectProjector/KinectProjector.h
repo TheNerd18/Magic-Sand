@@ -160,6 +160,10 @@ public:
         return projKinectCalibrationUpdated;
     }
 
+    float getMaxOffset(){
+        return maxOffset;
+    }
+
 	// The overall application stat
 	enum Application_state
 	{

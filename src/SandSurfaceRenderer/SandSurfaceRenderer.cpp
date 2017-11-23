@@ -102,7 +102,7 @@ void SandSurfaceRenderer::setup(bool sdisplayGui){
     colourTexture.allocate(volWidth, volHeight, volDepth, GL_RGBA);
     colourTexture.loadData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0, GL_RGBA);
 
-    fbo3dTextureTestWindow.allocate(extraResX, extraResY, GL_RGBA);
+    fbo3dTextureTestWindow.allocate(projResX, projResY, GL_RGBA);
     fbo3dTextureTestWindow.begin();
     // Bind the 3D texture and set the sampler variable in the fragment shader
     glActiveTextureARB(GL_TEXTURE1);
@@ -117,7 +117,7 @@ void SandSurfaceRenderer::setup(bool sdisplayGui){
 
     }
     glActiveTextureARB(GL_TEXTURE0);
-    fbo3dTextureTestWindow.begin();
+    fbo3dTextureTestWindow.end();
 
     // Load colormap folder and set heightmap
     colorMapPath = "colorMaps/";
@@ -314,8 +314,10 @@ void SandSurfaceRenderer::drawProjectorWindow(){
 }
 
 void SandSurfaceRenderer::drawExtraWindow(){
-    fbo3dTextureTestWindow.draw(-kinectROI.x,-kinectROI.y,extraWindow->getWidth(), extraWindow->getHeight());
-    //fboProjWindow.draw(0,0, extraResX, extraResY);
+    //fbo3dTextureTestWindow.draw(0, 0, extraWindow->getWidth(), extraWindow->getHeight());
+    //fbo3dTextureTestWindow.draw(0, 0, projResX, projResY);
+    fbo3dTextureTestWindow.draw(0,0, extraResX, extraResY);
+    //fbo3dTextureTestWindow.draw(0, 0);
 }
 
 void SandSurfaceRenderer::drawSandbox() {
@@ -343,8 +345,14 @@ void SandSurfaceRenderer::drawSandbox() {
     colour3dTextureShader.begin();
     colour3dTextureShader.setUniform1i("myTexture", 1);
     // colour3dTextureShader.setUniformTexture("tex0",depthImage.getTexture(), 2);    // Fails when bound to 0
-    colour3dTextureShader.setUniform1f("maxHeight", heightMapScale);
-    colour3dTextureShader.setUniform2f("meshDim", kinectROI.width, kinectROI.height);
+    colour3dTextureShader.setUniformMatrix4f("kinectProjMatrix",transposedKinectProjMatrix);
+    colour3dTextureShader.setUniformMatrix4f("kinectWorldMatrix",transposedKinectWorldMatrix);
+    colour3dTextureShader.setUniform2f("heightColorMapTransformation",ofVec2f(heightMapScale,heightMapOffset));
+    colour3dTextureShader.setUniform2f("depthTransformation",ofVec2f(FilteredDepthScale,FilteredDepthOffset));
+    colour3dTextureShader.setUniform4f("basePlaneEq", basePlaneEq);
+    colour3dTextureShader.setUniform2f("meshOffset", ofVec2f(kinectROI.x, kinectROI.y));//kinectProjector->getMaxOffset());
+    colour3dTextureShader.setUniform1f("maxHeight", elevationMax - elevationMin);//kinectProjector->getMaxOffset());
+    colour3dTextureShader.setUniform2f("meshDim", meshwidth, meshheight);
     
     mesh.draw();
     colour3dTextureShader.end();
