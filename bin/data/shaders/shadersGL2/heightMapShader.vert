@@ -34,9 +34,15 @@ uniform vec2 heightColorMapTransformation; // Transformation from elevation to h
 uniform vec2 depthTransformation; // Normalisation factor and offset applied by openframeworks
 uniform vec4 basePlaneEq; // Base plane equation
 
+uniform float maxHeight;
+uniform vec2 meshDim;
+uniform vec2 meshOffset;
+
+
 void main()
 {
     vec4 position =gl_Vertex;
+    gl_TexCoord[0] = (gl_MultiTexCoord0 - vec4(meshOffset.x, meshOffset.y, 0, 0)) / vec4(meshDim, 1.0, 1.0);
     vec2 texcoord = gl_MultiTexCoord0.xy;
     // copy position so we can work with it.
     vec4 pos = position;
@@ -66,4 +72,6 @@ void main()
     projectedPoint.w = 1;
     
 	gl_Position = gl_ModelViewProjectionMatrix * projectedPoint;
+
+    gl_TexCoord[0].z = (elevation * heightColorMapTransformation.x + heightColorMapTransformation.y) / (maxHeight);
 }

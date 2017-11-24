@@ -100,7 +100,7 @@ void SandSurfaceRenderer::setup(bool sdisplayGui){
         }
     }
 
-    colourTexture.allocate(volWidth, volHeight, volDepth, GL_RGBA);
+    colourTexture.allocate(volWidth, volHeight, volDepth, GL_RGBA, GL_LINEAR);
     colourTexture.loadData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0, GL_RGBA);
 
     fbo3dTextureTestWindow.allocate(projResX, projResY, GL_RGBA);
@@ -184,10 +184,11 @@ void SandSurfaceRenderer::setup(bool sdisplayGui){
         ofLogVerbose("SandSurfaceRenderer") << "setup(): Loading shadersGL2/elevationShader";
 		loaded = loaded && elevationShader.load("shaders/shadersGL2/elevationShader");
         ofLogVerbose("SandSurfaceRenderer") << "setup(): Loading shadersGL2/heightMapShader";
-		loaded = loaded && heightMapShader.load("shaders/shadersGL2/heightMapShader");
+        // loaded = loaded && heightMapShader.load("shaders/shadersGL2/heightMapShader");
+		loaded = loaded && heightMapShader.load("shaders/shadersGL2/heightMapShader.vert", "shaders/3dcolourtextureproj.frag");
 	}
 
-    loaded = loaded && colour3dTextureShader.load("shaders/3dcolourtexture");
+    loaded = loaded && colour3dTextureShader.load("shaders/3dcolourtexture.vert", "shaders/3dcolourtexturescreen.frag");
 #endif
     if (!loaded)
     {
@@ -332,6 +333,12 @@ void SandSurfaceRenderer::drawSandbox() {
     heightMapShader.setUniformTexture("pixelCornerElevationSampler", contourLineFramebufferObject.getTexture(), 3);
     heightMapShader.setUniform1f("contourLineFactor", contourLineFactor);
     heightMapShader.setUniform1i("drawContourLines", drawContourLines);
+    
+    heightMapShader.setUniform1i("colourTexture", 1);
+    heightMapShader.setUniform2f("meshOffset", ofVec2f(kinectROI.x, kinectROI.y));
+    heightMapShader.setUniform1f("maxHeight", elevationMax);  // Do we need to subtract elevationMin?
+    heightMapShader.setUniform2f("meshDim", meshwidth, meshheight);
+    
     mesh.draw();
     heightMapShader.end();
     kinectProjector->unbind();
@@ -341,7 +348,7 @@ void SandSurfaceRenderer::drawSandbox() {
     ofBackground(0);
     kinectProjector->bind();
     colour3dTextureShader.begin();
-    colour3dTextureShader.setUniform1i("myTexture", 1);
+    colour3dTextureShader.setUniform1i("colourTexture", 1);
     // colour3dTextureShader.setUniformTexture("tex0",depthImage.getTexture(), 2);    // Fails when bound to 0
     colour3dTextureShader.setUniformMatrix4f("kinectProjMatrix",transposedKinectProjMatrix);
     colour3dTextureShader.setUniformMatrix4f("kinectWorldMatrix",transposedKinectWorldMatrix);
