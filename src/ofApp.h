@@ -54,6 +54,8 @@ public:
 	std::shared_ptr<ofAppBaseWindow> projWindow;
 	std::shared_ptr<ofAppBaseWindow> extraWindow;
 
+	std::string texture_basename;
+
 private:
     ofxTexture3d colourTexture;
 

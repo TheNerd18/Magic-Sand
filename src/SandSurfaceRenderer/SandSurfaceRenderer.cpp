@@ -39,7 +39,7 @@ editColorMap(false){
     extraWindow = e;
 }
 
-void SandSurfaceRenderer::setup(bool sdisplayGui){
+void SandSurfaceRenderer::setup(bool sdisplayGui, std::string texture_basename){
     ofAddListener(ofEvents().exit, this, &SandSurfaceRenderer::exit);
     
     // Sandbox contourlines
@@ -70,7 +70,7 @@ void SandSurfaceRenderer::setup(bool sdisplayGui){
     ofxImageSequencePlayer imageSequence;
     
     //imageSequence.init("colour_texture_split/colour_text",3,".tif", 0);
-    imageSequence.init("head_brain1/img_",6,".tif", 0);
+    imageSequence.init(texture_basename,6,".tif", 0);
     int volWidth = imageSequence.getWidth();
     int volHeight = imageSequence.getHeight();
     int volDepth = imageSequence.getSequenceLength();

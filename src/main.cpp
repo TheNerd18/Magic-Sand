@@ -63,7 +63,7 @@ bool setWindowDimensions(ofGLFWWindowSettings& settings, int windowsNum) {
 }
 
 //========================================================================
-int main() {
+int main(int argc, char *argv[]) {
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	
 	ofGLFWWindowSettings settings;
@@ -103,6 +103,15 @@ int main() {
 	ofAddListener(thirdWindow->events().draw, mainApp.get(), &ofApp::drawExtraWindow);
 	mainApp->projWindow = secondWindow;
 	mainApp->extraWindow = thirdWindow;
+
+	if (argc > 1)
+	{
+		mainApp->texture_basename = argv[1];
+	}
+	else
+	{
+		mainApp->texture_basename = "head_brain1/img_";
+	}
 		
 	ofRunApp(mainWindow, mainApp);
 	ofRunMainLoop();

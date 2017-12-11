@@ -69,7 +69,7 @@ public:
         std::shared_ptr<ofAppBaseWindow> const& e);
     
     // Main loop function
-    void setup(bool sdisplayGui);
+    void setup(bool sdisplayGui, std::string texture_basename);
     void update();
     void drawMainWindow(float x, float y, float width, float height);
     void drawProjectorWindow();
