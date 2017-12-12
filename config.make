@@ -76,7 +76,7 @@
 # add a runtime path to search for those shared libraries, since they aren't 
 # incorporated directly into the final executable application binary.
 ################################################################################
-PROJECT_LDFLAGS=-Wl,-rpath=~/lib -ldlib -lblas -llapack
+PROJECT_LDFLAGS=-Wl,-rpath=~/lib -ldlib -lblas -llapack -llevmar
 
 ################################################################################
 # PROJECT DEFINES

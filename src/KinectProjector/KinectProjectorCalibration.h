@@ -32,6 +32,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "dlib/matrix.h"
 #include "dlib/matrix/matrix_qr.h"
 
+typedef struct
+{
+    dlib::matrix<double, 3, 3> R;
+    dlib::matrix<double, 3, 3> K;
+    dlib::matrix<double, 3, 1> t;
+} parameters_struct;
+
 
 class ofxKinectProjectorToolkit
 {
@@ -63,6 +70,7 @@ private:
 	ofVec2f projRes;
 	ofVec2f kinectRes;
 
+    parameters_struct get_parameters(ofMatrix4x4 projection_matrix);
     ofMatrix4x4 calibrate_svd(std::vector<ofVec3f> pairsKinect, 
         std::vector<ofVec2f> pairsProjector, int r);
     double ComputeReprojectionError(ofMatrix4x4 projMatrix, 
