@@ -29,8 +29,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #include <iostream>
 #include "ofMain.h"
-#include "libs/dlib/matrix.h"
-#include "libs/dlib/matrix/matrix_qr.h"
+#include "dlib/matrix.h"
+#include "dlib/matrix/matrix_qr.h"
 
 
 class ofxKinectProjectorToolkit
@@ -62,6 +62,13 @@ private:
     bool calibrated;
 	ofVec2f projRes;
 	ofVec2f kinectRes;
+
+    ofMatrix4x4 calibrate_svd(std::vector<ofVec3f> pairsKinect, 
+        std::vector<ofVec2f> pairsProjector, int r);
+    double ComputeReprojectionError(ofMatrix4x4 projMatrix, 
+        std::vector<ofVec3f> pairsKinect, std::vector<ofVec2f> pairsProjector);
+    void build_A(std::vector<ofVec3f> pairsKinect, std::vector<ofVec2f> pairsProjector);
+    void build_y(std::vector<ofVec3f> pairsKinect, std::vector<ofVec2f> pairsProjector);
 };
 
 #endif /* defined(__Magic_Sand__Calibration__) */
