@@ -75,6 +75,8 @@ private:
         std::vector<ofVec2f> pairsProjector, int r);
     double ComputeReprojectionError(ofMatrix4x4 projMatrix, 
         std::vector<ofVec3f> pairsKinect, std::vector<ofVec2f> pairsProjector);
+    double ComputeReprojectionErrorWithDistortion(double *parameters, int num_parameters,
+        std::vector<ofVec3f> pairsKinect, std::vector<ofVec2f> pairsProjector);
     void build_A(std::vector<ofVec3f> pairsKinect, std::vector<ofVec2f> pairsProjector);
     void build_y(std::vector<ofVec3f> pairsKinect, std::vector<ofVec2f> pairsProjector);
 };

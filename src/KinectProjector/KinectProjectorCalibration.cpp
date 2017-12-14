@@ -156,11 +156,11 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
         r -= 1;
     }
 
-    projMatrice = calibrate_svd(pairsKinect, pairsProjector, r);
+    ofMatrix4x4 projMatriceSVD = calibrate_svd(pairsKinect, pairsProjector, r);
 
-    cout << "SVD error = " << ComputeReprojectionError(projMatrice, pairsKinect, pairsProjector) << endl;
+    cout << "SVD error = " << ComputeReprojectionError(projMatriceSVD, pairsKinect, pairsProjector) << endl;
 
-    parameters_struct parameters = get_parameters(projMatrice);
+    parameters_struct parameters = get_parameters(projMatriceSVD);
     
     // Find extrinsic parameters to use as first estimate for LM
     double theta_y1 = -asin(parameters.R(2, 0));
@@ -213,13 +213,20 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
                      * info[9]= # linear systems solved, i.e. # attempts for reducing error
                      */
     int total_iterations = dlevmar_dif(levmar_proj_func, params, &measurements[0],
-        11, measurements.size(), 3000,
+        11, measurements.size(), 10000,
         NULL, info, NULL, NULL, &kinect_pairs_vect[0]);
 
     std::cout << "LM error at initial " << info[0] << std::endl;
     std::cout << "LM error at estimated " << info[1] << std::endl;
     std::cout << "LM num iterations " << info[5] << std::endl;
     std::cout << "LM reason for stopping " << info[6] << std::endl;
+
+    dlib::matrix<double, 3, 4> P_levmar_dlib = build_proj_matrix(params);
+    projMatrice = ofMatrix4x4(
+        P_levmar_dlib(0,0), P_levmar_dlib(0,1), P_levmar_dlib(0,2), P_levmar_dlib(0,3),
+        P_levmar_dlib(1,0), P_levmar_dlib(1,1), P_levmar_dlib(1,2), P_levmar_dlib(1,3),
+        P_levmar_dlib(2,0), P_levmar_dlib(2,1), P_levmar_dlib(2,2), 1,
+        0, 0, 0, 1);
 
     dlib::matrix<double, 3, 3> levmar_K;
     levmar_K(0, 0) = params[0];
@@ -231,6 +238,15 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
     levmar_K(2, 0) = 0;
     levmar_K(2, 1) = 0;
     levmar_K(2, 2) = 1;
+
+    total_iterations = dlevmar_dif(levmar_proj_func, params, &measurements[0],
+        sizeof(params) / sizeof(params[0]), measurements.size(), 10000,
+        NULL, info, NULL, NULL, &kinect_pairs_vect[0]);
+
+    std::cout << "LM error at initial " << info[0] << std::endl;
+    std::cout << "LM error at estimated " << info[1] << std::endl;
+    std::cout << "LM num iterations " << info[5] << std::endl;
+    std::cout << "LM reason for stopping " << info[6] << std::endl;
 
     // double lm_error = ComputeReprojectionErrorWithDistortion(params, 11, pairsKinect, pairsProjector);
 
@@ -249,7 +265,7 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
     //     std::cout << "LM reason for stopping " << info[6] << std::endl;
     // }
 
-    // // dlib::matrix<double, 3, 3> levmar_K;
+    // dlib::matrix<double, 3, 3> levmar_K;
     // levmar_K(0, 0) = params[0];
     // levmar_K(0, 1) = params[1];
     // levmar_K(0, 2) = params[2];
@@ -288,16 +304,19 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
     // std::cout << "params[8] = " << params[8] << std::endl;
     // std::cout << "params[9] = " << params[9] << std::endl;
     // std::cout << "params[10] = " << params[10] << std::endl;
-    // std::cout << "params[11] = " << params[11] << std::endl;
-    // std::cout << "params[12] = " << params[12] << std::endl;
-    // std::cout << "params[13] = " << params[13] << std::endl;
+    std::cout << "params[11] = " << params[11] << std::endl;
+    std::cout << "params[12] = " << params[12] << std::endl;
+    std::cout << "params[13] = " << params[13] << std::endl;
+    std::cout << "params[14] = " << params[13] << std::endl;
 
-    dlib::matrix<double, 3, 4> P_levmar_dlib = build_proj_matrix(params);
-    projMatrice = ofMatrix4x4(
-        P_levmar_dlib(0,0), P_levmar_dlib(0,1), P_levmar_dlib(0,2), P_levmar_dlib(0,3),
-        P_levmar_dlib(1,0), P_levmar_dlib(1,1), P_levmar_dlib(1,2), P_levmar_dlib(1,3),
-        P_levmar_dlib(2,0), P_levmar_dlib(2,1), P_levmar_dlib(2,2), 1,
-        0, 0, 0, 1);
+    std::cout << "LM error, no distortion = " << ComputeReprojectionError(projMatrice, pairsKinect, pairsProjector) << std::endl;
+    std::cout << "LM error, distortion = " << ComputeReprojectionErrorWithDistortion(params, sizeof(params) / sizeof(params[0]),
+        pairsKinect, pairsProjector) << std::endl;
+
+    if (ComputeReprojectionError(projMatriceSVD, pairsKinect, pairsProjector) < ComputeReprojectionError(projMatriceSVD, pairsKinect, pairsProjector))
+    {
+        projMatrice = projMatriceSVD;
+    }
 
     calibrated = true;
 }
@@ -417,6 +436,48 @@ double ofxKinectProjectorToolkit::ComputeReprojectionError(ofMatrix4x4 projMatri
         ofVec2f projP = pairsProjector[i];
 
         double D = sqrt((projectedPoint.x - projP.x) * (projectedPoint.x - projP.x) + (projectedPoint.y - projP.y) * (projectedPoint.y - projP.y));
+
+        PError += D;
+    }
+    PError /= (double)pairsKinect.size();
+
+    return PError;
+}
+
+double ofxKinectProjectorToolkit::ComputeReprojectionErrorWithDistortion(double *parameters, int num_parameters,
+    std::vector<ofVec3f> pairsKinect, std::vector<ofVec2f> pairsProjector)
+{
+    double PError = 0;
+
+    int n = pairsKinect.size();
+
+    std::vector<double> kinectPairsFlattened;
+    for (int i = 0; i < pairsKinect.size(); i++)
+    {
+        kinectPairsFlattened.push_back(pairsKinect[i].x);
+        kinectPairsFlattened.push_back(pairsKinect[i].y);
+        kinectPairsFlattened.push_back(pairsKinect[i].z);
+        kinectPairsFlattened.push_back(1);
+    }
+
+    std::vector<double> projected_points;
+    projected_points.resize(n * 2);
+
+    project_points(parameters, num_parameters, &projected_points[0], pairsKinect.size(), &kinectPairsFlattened[0]);
+
+    dlib::matrix<double, 0, 0> imagePoints;
+    imagePoints.set_size(n, 2);
+    imagePoints = trans(dlib::mat(&projected_points[0], n, 2));
+    // // std::cout << "imagePoints = " << std::endl << imagePoints << std::endl;
+
+    for (int i = 0; i < n; i++)
+    {
+        double ud = imagePoints(0, i);
+        double vd = imagePoints(1, i);
+
+        ofVec2f projP = pairsProjector[i];
+
+        double D = sqrt((ud - projP.x) * (ud - projP.x) + (vd - projP.y) * (vd - projP.y));
 
         PError += D;
     }
