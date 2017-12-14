@@ -785,7 +785,7 @@ void KinectProjector::updateProjKinectAutoCalibration()
 		calibrationText = "Sea level plane estimated";
 		updateStatusGUI();
 
-        autoCalibPts = new ofPoint[10];
+        autoCalibPts = new ofPoint[3];
 		float cs = 4 * chessboardSize / 3; 
 		float css = 3 * chessboardSize / 4;
         ofPoint sc = ofPoint(projRes.x/2,projRes.y/2);
@@ -797,13 +797,13 @@ void KinectProjector::updateProjKinectAutoCalibration()
         autoCalibPts[0] = ofPoint(0          ,0);                 // Center
         autoCalibPts[1] = ofPoint(projRes.x-cs,           cs) - sc; // upper right
         autoCalibPts[2] = ofPoint(projRes.x-cs, projRes.y-cs) - sc; // Lower right
-        autoCalibPts[3] = ofPoint(          cs, projRes.y-cs) - sc; // Lower left
-        autoCalibPts[4] = ofPoint(          cs,           cs)  -sc; // upper left 
-        autoCalibPts[5] = ofPoint(0.5*css         , 0.5*css);                    // Center
-        autoCalibPts[6] = ofPoint(projRes.x-0.5*css,         0.5*css) - sc; // upper right
-        autoCalibPts[7] = ofPoint(projRes.x-0.5*css,projRes.y-0.5*css) -sc; // Lower right
-        autoCalibPts[8] = ofPoint(0.5*css          ,projRes.y-0.5*css) -sc; // Lower left
-        autoCalibPts[9] = ofPoint(0.5*css,                    0.5*css) - sc; // upper left 
+        // autoCalibPts[3] = ofPoint(          cs, projRes.y-cs) - sc; // Lower left
+        // autoCalibPts[4] = ofPoint(          cs,           cs)  -sc; // upper left 
+        // autoCalibPts[5] = ofPoint(0.5*css         , 0.5*css);                    // Center
+        // autoCalibPts[6] = ofPoint(projRes.x-0.5*css,         0.5*css) - sc; // upper right
+        // autoCalibPts[7] = ofPoint(projRes.x-0.5*css,projRes.y-0.5*css) -sc; // Lower right
+        // autoCalibPts[8] = ofPoint(0.5*css          ,projRes.y-0.5*css) -sc; // Lower left
+        // autoCalibPts[9] = ofPoint(0.5*css,                    0.5*css) - sc; // upper left 
 
 		currentCalibPts = 0;
         trials = 0;
@@ -934,9 +934,9 @@ double KinectProjector::ComputeReprojectionError(bool WriteFile)
 
 void KinectProjector::CalibrateNextPoint()
 {
-	if (currentCalibPts < 10)
+	if (currentCalibPts < 3)
 	{
-		calibrationText = "Calibration # " + std::to_string(currentCalibPts + 1) + "/10";
+		calibrationText = "Calibration # " + std::to_string(currentCalibPts + 1) + "/3";
 		updateStatusGUI();
 
 		// Current RGB frame - probably with rolling shutter problems
