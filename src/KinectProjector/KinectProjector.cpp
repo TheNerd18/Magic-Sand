@@ -902,8 +902,27 @@ double KinectProjector::ComputeReprojectionError(bool WriteFile)
 		ofVec4f wc = pairsKinect[i];
 		wc.w = 1;
 
-		ofVec4f screenPos = kinectProjMatrix*wc;
-		ofVec2f projectedPoint(screenPos.x / screenPos.z, screenPos.y / screenPos.z);
+		ofVec4f projwc = kinectExtrinsicMatrix * wc;
+    	ofVec4f imageCoord = projwc / projwc.z;
+
+		float radius2 = imageCoord.x * imageCoord.x + imageCoord.y * imageCoord.y;
+	    float radius4 = radius2 * radius2;
+
+	    float d = 1 + kinectDistortionCoefficients.x * radius2 + kinectDistortionCoefficients.y * radius4;
+
+	    imageCoord.x *= d;
+	    imageCoord.y *= d;
+
+	    imageCoord = kinectIntrinsicMatrix * imageCoord;
+
+	    float u2 = imageCoord.x*imageCoord.x;
+	    float v2 = imageCoord.y*imageCoord.y;
+	    float uv = imageCoord.x*imageCoord.y;
+
+	    imageCoord.x = imageCoord.x + kinectDistortionCoefficients.z*2*uv + kinectDistortionCoefficients.w*(radius2 + u2);
+	    imageCoord.y = imageCoord.y + kinectDistortionCoefficients.w*2*uv + kinectDistortionCoefficients.z*(radius2 + v2);
+    
+		ofVec2f projectedPoint = imageCoord;
 		ofVec2f projP = pairsProjector[i];
 
 		double D = sqrt((projectedPoint.x - projP.x) * (projectedPoint.x - projP.x) + (projectedPoint.y - projP.y) * (projectedPoint.y - projP.y));

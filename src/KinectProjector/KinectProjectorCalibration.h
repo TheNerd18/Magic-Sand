@@ -45,8 +45,8 @@ class ofxKinectProjectorToolkit
 public:
     ofxKinectProjectorToolkit(ofVec2f projRes, ofVec2f kinectRes);
     
-    void calibrate(vector<ofVec3f> pairsKinect,
-                   vector<ofVec2f> pairsProjector);
+    void calibrate(vector<ofVec3f>& pairsKinect,
+                   vector<ofVec2f>& pairsProjector);
     
     ofVec2f getProjectedPoint(ofVec3f worldPoint);
     ofMatrix4x4 getProjectionMatrix();

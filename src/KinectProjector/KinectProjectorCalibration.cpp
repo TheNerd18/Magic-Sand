@@ -83,8 +83,8 @@ void ofxKinectProjectorToolkit::build_y(std::vector<ofVec3f> pairsKinect, std::v
     }
 }
 
-void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
-                                          vector<ofVec2f> pairsProjector) {
+void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f>& pairsKinect,
+                                          vector<ofVec2f>& pairsProjector) {
     int nPairs = pairsKinect.size();
 
     double mean_x = 0, mean_y = 0, mean_z = 0;
@@ -222,7 +222,7 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
     std::cout << "LM reason for stopping " << info[6] << std::endl;
 
     dlib::matrix<double, 3, 4> P_levmar_dlib = build_proj_matrix(params);
-    projMatrice = ofMatrix4x4(
+    ofMatrix4x4 projMatriceNoD(
         P_levmar_dlib(0,0), P_levmar_dlib(0,1), P_levmar_dlib(0,2), P_levmar_dlib(0,3),
         P_levmar_dlib(1,0), P_levmar_dlib(1,1), P_levmar_dlib(1,2), P_levmar_dlib(1,3),
         P_levmar_dlib(2,0), P_levmar_dlib(2,1), P_levmar_dlib(2,2), 1,
@@ -242,6 +242,13 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
     total_iterations = dlevmar_dif(levmar_proj_func, params, &measurements[0],
         sizeof(params) / sizeof(params[0]), measurements.size(), 10000,
         NULL, info, NULL, NULL, &kinect_pairs_vect[0]);
+
+    P_levmar_dlib = build_proj_matrix(params);
+    projMatrice = ofMatrix4x4(
+        P_levmar_dlib(0,0), P_levmar_dlib(0,1), P_levmar_dlib(0,2), P_levmar_dlib(0,3),
+        P_levmar_dlib(1,0), P_levmar_dlib(1,1), P_levmar_dlib(1,2), P_levmar_dlib(1,3),
+        P_levmar_dlib(2,0), P_levmar_dlib(2,1), P_levmar_dlib(2,2), 1,
+        0, 0, 0, 0);
 
     std::cout << "LM error at initial " << info[0] << std::endl;
     std::cout << "LM error at estimated " << info[1] << std::endl;
@@ -327,7 +334,7 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
     d1 = params[13];
     d2 = params[14];
 
-    std::cout << "LM error, no distortion = " << ComputeReprojectionError(projMatrice, pairsKinect, pairsProjector) << std::endl;
+    std::cout << "LM error, no distortion = " << ComputeReprojectionError(projMatriceNoD, pairsKinect, pairsProjector) << std::endl;
     std::cout << "LM error, distortion = " << ComputeReprojectionErrorWithDistortion(params, sizeof(params) / sizeof(params[0]),
         pairsKinect, pairsProjector) << std::endl;
 
