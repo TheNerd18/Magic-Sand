@@ -117,7 +117,7 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
         int removed = 0;
         while (idx < nPairs)
         {
-            if (radii(0, j) > 2*r_stddev)
+            if (radii(0, j) > 3*r_stddev)
             {
                 removed++;
                 pairsKinect.erase(pairsKinect.begin() + idx);
@@ -140,14 +140,14 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
     //     y(2*i+1, 0) = pairsProjector[i].y;
     // }
     
-    dlib::qr_decomposition<dlib::matrix<double, 0, 11> > qrd(A);
-    dlib::matrix<double> qr_x = qrd.solve(y);
+   //dlib::qr_decomposition<dlib::matrix<double, 0, 11> > qrd(A);
+    //dlib::matrix<double> qr_x = qrd.solve(y);
     // cout << "x: "<< x << endl;
-    ofMatrix4x4 qr_projMatrice = ofMatrix4x4(x(0,0), x(1,0), x(2,0), x(3,0),
-                              x(4,0), x(5,0), x(6,0), x(7,0),
-                              x(8,0), x(9,0), x(10,0), 1,
-                              0, 0, 0, 1);
-    cout << "QR error = " << ComputeReprojectionError(qr_projMatrice, pairsKinect, pairsProjector) << x << endl;
+    //ofMatrix4x4 qr_projMatrice = ofMatrix4x4(x(0,0), x(1,0), x(2,0), x(3,0),
+    //                          x(4,0), x(5,0), x(6,0), x(7,0),
+    //                          x(8,0), x(9,0), x(10,0), 1,
+    //                          0, 0, 0, 1);
+    //cout << "QR error = " << ComputeReprojectionError(qr_projMatrice, pairsKinect, pairsProjector) << x << endl;
 
     int r = 11;
 
@@ -226,18 +226,18 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
         P_levmar_dlib(0,0), P_levmar_dlib(0,1), P_levmar_dlib(0,2), P_levmar_dlib(0,3),
         P_levmar_dlib(1,0), P_levmar_dlib(1,1), P_levmar_dlib(1,2), P_levmar_dlib(1,3),
         P_levmar_dlib(2,0), P_levmar_dlib(2,1), P_levmar_dlib(2,2), 1,
-        0, 0, 0, 1);
+        0, 0, 0, 0);
 
-    dlib::matrix<double, 3, 3> levmar_K;
-    levmar_K(0, 0) = params[0];
-    levmar_K(0, 1) = params[1];
-    levmar_K(0, 2) = params[2];
-    levmar_K(1, 0) = 0;
-    levmar_K(1, 1) = params[3];
-    levmar_K(1, 2) = params[4];
-    levmar_K(2, 0) = 0;
-    levmar_K(2, 1) = 0;
-    levmar_K(2, 2) = 1;
+    // dlib::matrix<double, 3, 3> levmar_K;
+    // levmar_K(0, 0) = params[0];
+    // levmar_K(0, 1) = params[1];
+    // levmar_K(0, 2) = params[2];
+    // levmar_K(1, 0) = 0;
+    // levmar_K(1, 1) = params[3];
+    // levmar_K(1, 2) = params[4];
+    // levmar_K(2, 0) = 0;
+    // levmar_K(2, 1) = 0;
+    // levmar_K(2, 2) = 1;
 
     total_iterations = dlevmar_dif(levmar_proj_func, params, &measurements[0],
         sizeof(params) / sizeof(params[0]), measurements.size(), 10000,
@@ -304,19 +304,42 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f> pairsKinect,
     // std::cout << "params[8] = " << params[8] << std::endl;
     // std::cout << "params[9] = " << params[9] << std::endl;
     // std::cout << "params[10] = " << params[10] << std::endl;
-    std::cout << "params[11] = " << params[11] << std::endl;
-    std::cout << "params[12] = " << params[12] << std::endl;
-    std::cout << "params[13] = " << params[13] << std::endl;
-    std::cout << "params[14] = " << params[13] << std::endl;
+    // std::cout << "params[11] = " << params[11] << std::endl;
+    // std::cout << "params[12] = " << params[12] << std::endl;
+    // std::cout << "params[13] = " << params[13] << std::endl;
+    // std::cout << "params[14] = " << params[13] << std::endl;
+
+    dlib::matrix<double, 3, 3> K = build_intrinsics_matrix(params);
+    dlib::matrix<double, 3, 4> E = build_extrinsics_matrix(params);
+
+    intrinsicMatrix = ofMatrix4x4(K(0, 0), K(0, 1), K(0, 2), 0,
+        K(1, 0), K(1, 1), K(1, 2), 0,
+        K(2, 0), K(2, 1), K(2, 2), 0,
+        0, 0, 0, 0);
+
+    extrinsicMatrix = ofMatrix4x4(E(0, 0), E(0, 1), E(0, 2), E(0, 3),
+        E(1, 0), E(1, 1), E(1, 2), E(1, 3),
+        E(2, 0), E(2, 1), E(2, 2), E(2, 3),
+        0, 0, 0, 0);
+
+    k1 = params[11];
+    k2 = params[12];
+    d1 = params[13];
+    d2 = params[14];
 
     std::cout << "LM error, no distortion = " << ComputeReprojectionError(projMatrice, pairsKinect, pairsProjector) << std::endl;
     std::cout << "LM error, distortion = " << ComputeReprojectionErrorWithDistortion(params, sizeof(params) / sizeof(params[0]),
         pairsKinect, pairsProjector) << std::endl;
 
-    if (ComputeReprojectionError(projMatriceSVD, pairsKinect, pairsProjector) < ComputeReprojectionError(projMatriceSVD, pairsKinect, pairsProjector))
-    {
-        projMatrice = projMatriceSVD;
-    }
+    // if (ComputeReprojectionError(projMatriceSVD, pairsKinect, pairsProjector) < ComputeReprojectionError(projMatriceSVD, pairsKinect, pairsProjector))
+    // {
+    //     projMatrice = projMatriceSVD;
+    // }
+
+    std::cout << "Projection matrix = " << projMatrice << std::endl;
+    std::cout << "Extrinsic matrix = " << extrinsicMatrix << std::endl;
+    std::cout << "Intrinsic matrix = " << intrinsicMatrix << std::endl;
+    std::cout << "Distortion coefficients = " << ofVec4f(k1, k2, d1,d2) << std::endl;
 
     calibrated = true;
 }
@@ -490,6 +513,19 @@ ofMatrix4x4 ofxKinectProjectorToolkit::getProjectionMatrix() {
     return projMatrice;
 }
 
+ofMatrix4x4 ofxKinectProjectorToolkit::getIntrinsicMatrix() {
+    return intrinsicMatrix;
+}
+
+ofMatrix4x4 ofxKinectProjectorToolkit::getExtrinsicMatrix() {
+    return extrinsicMatrix;
+}
+
+ofVec4f ofxKinectProjectorToolkit::getDistortionCoefficients()
+{
+    return ofVec4f(k1, k2, d1, d2);
+}
+
 ofVec2f ofxKinectProjectorToolkit::getProjectedPoint(ofVec3f worldPoint) {
     ofVec4f pts = ofVec4f(worldPoint);
     pts.w = 1;
@@ -516,14 +552,45 @@ bool ofxKinectProjectorToolkit::loadCalibration(string path){
 	ofVec2f skinectRes = xml.getValue<ofVec2f>("KINECT");
 	if (sprojRes!=projRes || skinectRes!=kinectRes)
 		return false;
-    xml.setTo("//CALIBRATION/COEFFICIENTS");
+    xml.setTo("//CALIBRATION/PROJCOEFFICIENTS");
+    dlib::matrix<float, 11, 1> p_vec;
     for (int i=0; i<11; i++) {
-        x(i, 0) = xml.getValue<float>("COEFF"+ofToString(i));
+        p_vec(i, 0) = xml.getValue<float>("COEFF"+ofToString(i));
+        //std::cout << "p_vec(" << i << ", 0) = " << p_vec(i, 0) << std::endl;
     }
-    projMatrice = ofMatrix4x4(x(0,0), x(1,0), x(2,0), x(3,0),
-                              x(4,0), x(5,0), x(6,0), x(7,0),
-                              x(8,0), x(9,0), x(10,0), 1,
+    //std::cout << "p_vec = " << p_vec << std::endl;
+    projMatrice = ofMatrix4x4(p_vec(0,0), p_vec(1,0), p_vec(2,0), p_vec(3,0),
+                              p_vec(4,0), p_vec(5,0), p_vec(6,0), p_vec(7,0),
+                              p_vec(8,0), p_vec(9,0), p_vec(10,0), 1,
                               0, 0, 0, 0);
+    
+    xml.setTo("//CALIBRATION/INTCOEFFICIENTS");
+    dlib::matrix<float, 12, 1> i_vec;
+    for (int i=0; i<12; i++) {
+        i_vec(i, 0) = xml.getValue<float>("COEFF"+ofToString(i));
+    }
+    intrinsicMatrix = ofMatrix4x4(i_vec(0,0), i_vec(1,0), i_vec(2,0), i_vec(3,0),
+                              i_vec(4,0), i_vec(5,0), i_vec(6,0), i_vec(7,0),
+                              i_vec(8,0), i_vec(9,0), i_vec(10,0), i_vec(11,0),
+                              0, 0, 0, 0);
+
+    xml.setTo("//CALIBRATION/EXTCOEFFICIENTS");
+    dlib::matrix<float, 12, 1> e_vec;
+    for (int i=0; i<16; i++) {
+        e_vec(i, 0) = xml.getValue<float>("COEFF"+ofToString(i));
+    }
+    extrinsicMatrix = ofMatrix4x4(e_vec(0,0), e_vec(1,0), e_vec(2,0), e_vec(3,0),
+                              e_vec(4,0), e_vec(5,0), e_vec(6,0), e_vec(7,0),
+                              e_vec(8,0), e_vec(9,0), e_vec(10,0), e_vec(11,0),
+                              0, 0, 0, 0);
+
+
+    xml.setTo("//CALIBRATION/DISTCOEFFICIENTS");
+    k1 = xml.getValue<float>("K1");
+    k2 = xml.getValue<float>("K2");
+    d1 = xml.getValue<float>("D1");
+    d2 = xml.getValue<float>("D2");
+    
     calibrated = true;
     return true;
 }
@@ -537,13 +604,47 @@ bool ofxKinectProjectorToolkit::saveCalibration(string path){
 	xml.addValue("PROJECTOR", projRes);
 	xml.addValue("KINECT", kinectRes);
 	xml.setTo("//CALIBRATION");
-	xml.addChild("COEFFICIENTS");
-	xml.setTo("COEFFICIENTS");
-	for (int i=0; i<11; i++) {
+    xml.addChild("PROJCOEFFICIENTS");
+    xml.setTo("PROJCOEFFICIENTS");
+    for (int i=0; i<11; i++) {
         ofXml coeff;
-        coeff.addValue("COEFF"+ofToString(i), x(i, 0));
+        coeff.addValue("COEFF"+ofToString(i), projMatrice(i / 4, i % 4));
         xml.addXml(coeff);
     }
+    xml.setTo("//CALIBRATION");
+    xml.addChild("INTCOEFFICIENTS");
+    xml.setTo("INTCOEFFICIENTS");
+    for (int i=0; i<12; i++) {
+        ofXml coeff;
+        coeff.addValue("COEFF"+ofToString(i), intrinsicMatrix(i / 4, i % 4));
+        xml.addXml(coeff);
+    }
+    xml.setTo("//CALIBRATION");
+    xml.addChild("EXTCOEFFICIENTS");
+    xml.setTo("EXTCOEFFICIENTS");
+    for (int i=0; i<16; i++) {
+        ofXml coeff;
+        coeff.addValue("COEFF"+ofToString(i), extrinsicMatrix(i / 4, i % 4));
+        xml.addXml(coeff);
+    }
+
+    xml.setTo("//CALIBRATION");
+	xml.addChild("DISTCOEFFICIENTS");
+	xml.setTo("DISTCOEFFICIENTS");
+    ofXml coeff;
+    coeff.addValue("K1", k1);
+    xml.addXml(coeff);
+    coeff.clear();
+    coeff.addValue("K2", k2);
+    xml.addXml(coeff);
+    coeff.clear();
+    coeff.addValue("D1", d1);
+    xml.addXml(coeff);
+    coeff.clear();
+    coeff.addValue("D2", d2);
+    xml.addXml(coeff);
+    coeff.clear();
+
     xml.setToParent();
     return xml.save(path);
 }

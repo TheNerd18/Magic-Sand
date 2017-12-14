@@ -5,5 +5,5 @@
 uniform sampler3D colourTexture;
 void main()
 {
-    gl_FragColor = texture3D(colourTexture, gl_TexCoord[0].xzy);
+    gl_FragColor = texture3D(colourTexture, gl_TexCoord[0].xyz);
 }

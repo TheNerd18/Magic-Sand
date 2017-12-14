@@ -223,6 +223,9 @@ void SandSurfaceRenderer::updateConversionMatrices(){
     // Get conversion matrices
     transposedKinectProjMatrix = kinectProjector->getTransposedKinectProjMatrix();
     transposedKinectWorldMatrix = kinectProjector->getTransposedKinectWorldMatrix();
+    kinectIntrinsicMatrix = kinectProjector->getTransposedKinectIntrinsicMatrix();
+    kinectExtrinsicMatrix = kinectProjector->getTransposedKinectExtrinsicMatrix();
+    kinectDistortionCoefficients = kinectProjector->getKinectDistortionCoefficients();
 }
 
 void SandSurfaceRenderer::updateRangesAndBasePlane(){
@@ -326,6 +329,9 @@ void SandSurfaceRenderer::drawSandbox() {
     heightMapShader.begin();
     heightMapShader.setUniformMatrix4f("kinectProjMatrix",transposedKinectProjMatrix);
     heightMapShader.setUniformMatrix4f("kinectWorldMatrix",transposedKinectWorldMatrix);
+    heightMapShader.setUniformMatrix4f("kinectIntrinsicMatrix", kinectIntrinsicMatrix);
+    heightMapShader.setUniformMatrix4f("kinectExtrinsicMatrix", kinectExtrinsicMatrix);
+    heightMapShader.setUniform4f("distortionCoefficients", kinectDistortionCoefficients);
     heightMapShader.setUniform2f("heightColorMapTransformation",ofVec2f(heightMapScale,heightMapOffset));
     heightMapShader.setUniform2f("depthTransformation",ofVec2f(FilteredDepthScale,FilteredDepthOffset));
     heightMapShader.setUniform4f("basePlaneEq", basePlaneEq);
@@ -352,6 +358,9 @@ void SandSurfaceRenderer::drawSandbox() {
     // colour3dTextureShader.setUniformTexture("tex0",depthImage.getTexture(), 2);    // Fails when bound to 0
     colour3dTextureShader.setUniformMatrix4f("kinectProjMatrix",transposedKinectProjMatrix);
     colour3dTextureShader.setUniformMatrix4f("kinectWorldMatrix",transposedKinectWorldMatrix);
+    colour3dTextureShader.setUniformMatrix4f("kinectIntrinsicMatrix", kinectIntrinsicMatrix);
+    colour3dTextureShader.setUniformMatrix4f("kinectExtrinsicMatrix", kinectExtrinsicMatrix);
+    colour3dTextureShader.setUniform4f("distortionCoefficients", kinectDistortionCoefficients);
     colour3dTextureShader.setUniform2f("heightColorMapTransformation",ofVec2f(heightMapScale,heightMapOffset));
     colour3dTextureShader.setUniform2f("depthTransformation",ofVec2f(FilteredDepthScale,FilteredDepthOffset));
     colour3dTextureShader.setUniform4f("basePlaneEq", basePlaneEq);

@@ -30,6 +30,9 @@ uniform sampler2DRect tex0; // Sampler for the depth image-space elevation textu
 
 uniform mat4 kinectProjMatrix; // Transformation from kinect world space to proj image space
 uniform mat4 kinectWorldMatrix; // Transformation from kinect image space to kinect world space
+uniform mat4 kinectIntrinsicMatrix;
+uniform mat4 kinectExtrinsicMatrix;
+uniform vec4 distortionCoefficients;
 uniform vec2 heightColorMapTransformation; // Transformation from elevation to height color map texture coordinate factor and offset
 uniform vec2 depthTransformation; // Normalisation factor and offset applied by openframeworks
 uniform vec4 basePlaneEq; // Base plane equation
@@ -65,12 +68,33 @@ void main()
     depthfrag = elevation*heightColorMapTransformation.x+heightColorMapTransformation.y;
     
     /* Transform vertex to proj coordinates: */
-    vec4 screenPos = kinectProjMatrix * vertexCcx;
-    vec4 projectedPoint = screenPos / screenPos.z;
+    //vec4 screenPos = kinectIntrinsicMatrix * kinectExtrinsicMatrix * vertexCcx;
+    //vec4 projectedPoint = screenPos / screenPos.z;
+    //vec4 screenPos = kinectProjMatrix * vertexCcx;
+    //vec4 projectedPoint = screenPos / screenPos.z;
+    
+    vec4 projCoord = kinectExtrinsicMatrix * vertexCcx;
+    vec4 imageCoord = projCoord / projCoord.z;
+    
+    float radius2 = imageCoord.x * imageCoord.x + imageCoord.y * imageCoord.y;
+    float radius4 = radius2 * radius2;
+
+    float d = 1 + distortionCoefficients.x * radius2 + distortionCoefficients.y * radius4;
+
+    imageCoord.x *= d;
+    imageCoord.y *= d;
+
+    imageCoord = kinectIntrinsicMatrix * imageCoord;
+
+    imageCoord.x = imageCoord.x + distortionCoefficients.z*2*imageCoord.x*imageCoord.y + distortionCoefficients.w*(radius2 + imageCoord.x*imageCoord.x);
+    imageCoord.y = imageCoord.y + distortionCoefficients.w*2*imageCoord.x*imageCoord.y + distortionCoefficients.z*(radius2 + imageCoord.y*imageCoord.y);
+    
+    vec4 projectedPoint = imageCoord; //screenPos / screenPos.z;
+    //vec4 projectedPoint = screenPos / screenPos.z;
 
     projectedPoint.z = 0;
     projectedPoint.w = 1;
-    
+
 	gl_Position = gl_ModelViewProjectionMatrix * projectedPoint;
 
     gl_TexCoord[0].z = (elevation * heightColorMapTransformation.x + heightColorMapTransformation.y) / (maxHeight);

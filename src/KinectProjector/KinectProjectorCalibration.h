@@ -50,6 +50,9 @@ public:
     
     ofVec2f getProjectedPoint(ofVec3f worldPoint);
     ofMatrix4x4 getProjectionMatrix();
+    ofMatrix4x4 getIntrinsicMatrix();
+    ofMatrix4x4 getExtrinsicMatrix();
+    ofVec4f getDistortionCoefficients();
     
     vector<double> getCalibration();
     
@@ -65,6 +68,13 @@ private:
     dlib::matrix<double, 11, 1> x;
     
     ofMatrix4x4 projMatrice;
+    ofMatrix4x4 intrinsicMatrix;
+    ofMatrix4x4 extrinsicMatrix;
+    double k1;
+    double k2;
+    
+    double d1;
+    double d2;
     
     bool calibrated;
 	ofVec2f projRes;

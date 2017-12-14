@@ -843,6 +843,9 @@ void KinectProjector::updateProjKinectAutoCalibration()
             ofLogVerbose("KinectProjector") << "autoCalib(): Calibrating" ;
             kpt->calibrate(pairsKinect, pairsProjector);
             kinectProjMatrix = kpt->getProjectionMatrix();
+            kinectIntrinsicMatrix = kpt->getIntrinsicMatrix();
+            kinectExtrinsicMatrix = kpt->getExtrinsicMatrix();
+            kinectDistortionCoefficients = kpt->getDistortionCoefficients();
 
 			double ReprojectionError = ComputeReprojectionError(DumpDebugFiles);
 			ofLogVerbose("KinectProjector") << "autoCalib(): ReprojectionError " + ofToString(ReprojectionError);
@@ -1178,7 +1181,7 @@ void KinectProjector::askToFlattenSand(){
     fboProjWindow.begin();
     ofBackground(255);
     fboProjWindow.end();
-    confirmModal->setMessage("Please flatten the sand surface.");
+    confirmModal->setMessage("Mess up the sand. Seriously. Just go nuts.");
     confirmModal->show();
     waitingForFlattenSand = true;
 }
@@ -1475,6 +1478,16 @@ void KinectProjector::startApplication()
 			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): Calibration loaded ";
 			kinectProjMatrix = kpt->getProjectionMatrix();
 			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): kinectProjMatrix: " << kinectProjMatrix;
+			kinectExtrinsicMatrix = kpt->getExtrinsicMatrix();
+			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): kinectExtrinsicMatrix: " << kinectExtrinsicMatrix;
+			kinectIntrinsicMatrix = kpt->getIntrinsicMatrix();
+			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): kinectIntrinsicMatrix: " << kinectIntrinsicMatrix;
+			//ofMatrix4x4 testProj = kinectIntrinsicMatrix*kinectExtrinsicMatrix;
+			//ofLogVerbose("KinectProjector") << "KinectProjector.setup(): kinectIntrinsicMatrix*kinectExtrinsicMatrix: " << testProj;
+			//testProj.scale(1.0 /testProj(2, 3), 1.0 /testProj(2, 3), 1.0 /testProj(2, 3));
+			//ofLogVerbose("KinectProjector") << "KinectProjector.setup(): kinectIntrinsicMatrix*kinectExtrinsicMatrix: " << testProj;
+			kinectDistortionCoefficients = kpt->getDistortionCoefficients();
+			ofLogVerbose("KinectProjector") << "KinectProjector.setup(): kinectDistortionCoefficients: " << kinectDistortionCoefficients;
 			projKinectCalibrated = true;
 			projKinectCalibrationUpdated = true;
 			updateStatusGUI();

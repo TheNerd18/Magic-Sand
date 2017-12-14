@@ -114,6 +114,15 @@ public:
     ofMatrix4x4 getTransposedKinectProjMatrix(){
         return kinectProjMatrix.getTransposedOf(kinectProjMatrix);
     }
+    ofMatrix4x4 getTransposedKinectIntrinsicMatrix(){
+        return kinectIntrinsicMatrix.getTransposedOf(kinectIntrinsicMatrix);
+    }
+    ofMatrix4x4 getTransposedKinectExtrinsicMatrix(){
+        return kinectExtrinsicMatrix.getTransposedOf(kinectExtrinsicMatrix);
+    }
+    ofVec4f getKinectDistortionCoefficients(){
+        return kinectDistortionCoefficients;
+    }
 	// Depending on the mount direction of the Kinect, projections can be flipped. 
 	bool getProjectionFlipped();
 
@@ -333,7 +342,10 @@ private:
     
     // Conversion matrices
     ofMatrix4x4                 kinectProjMatrix;
+    ofMatrix4x4                 kinectIntrinsicMatrix;
+    ofMatrix4x4                 kinectExtrinsicMatrix;
     ofMatrix4x4                 kinectWorldMatrix;
+    ofVec4f                     kinectDistortionCoefficients;
 
     // Max offset for keeping kinect points
     float maxOffset;

@@ -112,6 +112,9 @@ private:
     // Conversion matrices
     ofMatrix4x4                 transposedKinectProjMatrix;
     ofMatrix4x4                 transposedKinectWorldMatrix;
+    ofMatrix4x4                 kinectIntrinsicMatrix;
+    ofMatrix4x4                 kinectExtrinsicMatrix;
+    ofVec4f                     kinectDistortionCoefficients;
 
     // Mesh
     ofMesh mesh;
