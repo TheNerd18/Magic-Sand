@@ -87,53 +87,134 @@ void ofxKinectProjectorToolkit::calibrate(vector<ofVec3f>& pairsKinect,
                                           vector<ofVec2f>& pairsProjector) {
     int nPairs = pairsKinect.size();
 
-    double mean_x = 0, mean_y = 0, mean_z = 0;
+    std::vector<int> outlier_idx;
+            
+    int num_samples = 20;
+    unsigned int N = -1;
+    unsigned int max_iter = 1000;
+    float threshold = 10;
 
-    for (int i = 0 ; i < nPairs; i++)
+    std::vector<ofMatrix4x4> estimated_matrices;
+    std::vector<int> num_inliers;
+    std::vector<double> distance_std_dev;
+
+    for (unsigned int iter = 0; iter < N; iter++)
     {
-        mean_x += pairsKinect[i].x;
-        mean_y += pairsKinect[i].y;
-        mean_z += pairsKinect[i].z;
-    }
+        std::vector<ofVec3f> kinectSamples;
+        std::vector<ofVec2f> projectorSamples;
 
-    mean_x /= nPairs;
-    mean_y /= nPairs;
-    mean_z /= nPairs;
-
-    dlib::running_stats<double> radii_stats;
-    dlib::matrix<double, 0, 0> radii;
-    radii.set_size(1, nPairs);
-
-    for (int i = 0 ; i < nPairs; i++)
-    {
-        radii(0, i) = sqrt(pow(pairsKinect[i].x - mean_x, 2) + pow(pairsKinect[i].y - mean_y, 2) + pow(pairsKinect[i].z - mean_z, 2));
-        radii_stats.add(radii(0, i));
-    }
-
-    {
-        double r_stddev = radii_stats.stddev();
-        int idx = 0;
-        int j = 0;
-        int removed = 0;
-        while (idx < nPairs)
+        for (int i = 0; i < num_samples; i++)
         {
-            if (radii(0, j) > 3*r_stddev)
-            {
-                removed++;
-                pairsKinect.erase(pairsKinect.begin() + idx);
-                pairsProjector.erase(pairsProjector.begin() + idx);
-            }
-            else
-            {
-                idx++;
-            }
+            int sample_idx = rand() % nPairs;
 
-            j++;
+            kinectSamples.push_back(pairsKinect[sample_idx]);
+            projectorSamples.push_back(pairsProjector[sample_idx]);
         }
-        std::cout << "Removed " << removed << " pairs" <<std::endl;
+
+        ofMatrix4x4 projMatrixEstSVD = calibrate_svd(kinectSamples, projectorSamples, 11);
+
+        dlib::running_stats<double> distance_stats;
+
+        int inliers = 0;
+
+        for (int i = 0; i < num_samples; i++)
+        {
+            ofVec4f wc = kinectSamples[i];
+            wc.w = 1;
+
+            ofVec4f screenPos = projMatrixEstSVD*wc;
+
+            ofVec2f projectedPoint(screenPos.x / screenPos.z, screenPos.y / screenPos.z);
+            ofVec2f projP = projectorSamples[i];
+
+            double d = sqrt((projectedPoint.x - projP.x) * (projectedPoint.x - projP.x) + 
+                (projectedPoint.y - projP.y) * (projectedPoint.y - projP.y));
+
+            distance_stats.add(d);
+
+            if (d <= threshold)
+            {
+                inliers++;
+            }
+        }
+
+        estimated_matrices.push_back(projMatrixEstSVD);
+        num_inliers.push_back(inliers);
+        distance_std_dev.push_back(distance_stats.stddev());
+        
+        double epsilon = 1 - (1.0 * inliers) / num_samples;
+        epsilon = std::max(epsilon, 0.0);
+        epsilon = std::min(epsilon, 1.0);
+
+        // avoid inf's & nan's
+        double num = std::max(1.0 - 0.99, DBL_MIN);
+        double denom = 1.0 - std::pow(1.0 - epsilon, num_samples);
+
+        // i.e. denom is 0 as far as the FPU can tell, meaning that epsilon
+        // is 1.0 - we've found a sample set that's all inliers
+        if(denom < DBL_MIN)
+            N = 0;
+        else
+        {
+            num = std::log(num);
+            denom = std::log(denom);
+
+            // Clamp to max_iter 
+            // positive denom gives negative N, second clause stops N > max_iter
+            N = denom >= 0 || -num >= max_iter*(-denom) ? max_iter : std::round(num/denom);
+        }
     }
 
-    nPairs = pairsKinect.size();
+    int max_inliers = 0;
+    int max_idx = 0;
+
+    for (int i = 0; i < num_inliers.size(); i++)
+    {
+        if (num_inliers[i] >= max_inliers)
+        {
+            if (num_inliers[i] == max_inliers)
+            {
+                if (distance_std_dev[i] > distance_std_dev[max_idx])
+                {
+                    continue;
+                }
+            }
+
+            max_inliers = num_inliers[i];
+            max_idx = i;
+        }
+    }
+
+    ofMatrix4x4 projMatrixSVDEst = estimated_matrices[max_idx];
+
+    for (int i = 0; i < nPairs; i++)
+    {
+        ofVec4f wc = pairsKinect[i];
+        wc.w = 1;
+
+        ofVec4f screenPos = projMatrixSVDEst*wc;
+
+        ofVec2f projectedPoint(screenPos.x / screenPos.z, screenPos.y / screenPos.z);
+        ofVec2f projP = pairsProjector[i];
+
+        double d = sqrt((projectedPoint.x - projP.x) * (projectedPoint.x - projP.x) + 
+            (projectedPoint.y - projP.y) * (projectedPoint.y - projP.y));
+
+        if (d > threshold)
+        {
+            outlier_idx.push_back(i);
+        }
+    }
+
+    std::cout << "Found " << outlier_idx.size() << " outliers in " << nPairs << std::endl;
+
+    int removed = 0;
+    for (int i = 0; i < outlier_idx.size(); i++)
+    {
+        pairsKinect.erase(pairsKinect.begin() + outlier_idx[i] - removed);
+        pairsProjector.erase(pairsProjector.begin() + outlier_idx[i] - removed);
+        removed++;
+    }
 
     build_A(pairsKinect, pairsProjector);
     build_y(pairsKinect, pairsProjector);
@@ -404,11 +485,15 @@ parameters_struct ofxKinectProjectorToolkit::get_parameters(ofMatrix4x4 projecti
         output.R(2, 2) *= -1;
     }
 
+    double det_R = det(output.R);
+
+    output.R *= det_R;
+
     float tmp = output.K(2, 2);
 
     output.K = output.K / tmp;
     
-    output.t = inv(output.K) * (p_right / tmp);
+    output.t = inv(output.K) * (p_right / tmp) * det_R;
 
     return output;
 }
