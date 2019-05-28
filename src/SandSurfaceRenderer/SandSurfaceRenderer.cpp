@@ -612,7 +612,7 @@ void SandSurfaceRenderer::onSaveModalEvent(ofxModalEvent e){
 bool SandSurfaceRenderer::loadSettings(){
     string settingsFile = "settings/sandSurfaceRendererSettings.xml";
     
-    ofXml xml;
+    ofxXmlPoco xml;
     if (!xml.load(settingsFile))
         return false;
     xml.setTo("SURFACERENDERERSETTINGS");
@@ -626,7 +626,7 @@ bool SandSurfaceRenderer::loadSettings(){
 bool SandSurfaceRenderer::saveSettings(){
     string settingsFile = "settings/sandSurfaceRendererSettings.xml";
 
-    ofXml xml;
+    ofxXmlPoco xml;
     xml.addChild("SURFACERENDERERSETTINGS");
     xml.setTo("SURFACERENDERERSETTINGS");
     xml.addValue("colorMapFile", colorMapFile);

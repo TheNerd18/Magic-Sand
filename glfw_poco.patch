@@ -1,0 +1,310 @@
+diff --git a/addons.make b/addons.make
+index 1112c06..c246fb0 100644
+--- a/addons.make
++++ b/addons.make
+@@ -6,3 +6,4 @@ ofxOpenCv
+ ofxParagraph
+ ofxXmlSettings
+ ofxVolumetrics
++ofxPoco
+\ No newline at end of file
+diff --git a/src/Games/ReferenceMapHandler.cpp b/src/Games/ReferenceMapHandler.cpp
+index 897b3aa..3e4bb65 100644
+--- a/src/Games/ReferenceMapHandler.cpp
++++ b/src/Games/ReferenceMapHandler.cpp
+@@ -118,7 +118,7 @@ bool CReferenceMapHandler::WriteToFile()
+ {
+ 	std::string refName = "mapGame/ReferenceData/MapReferenceSettings.xml";
+ 
+-	ofXml XMLOut;
++	ofxXmlPoco XMLOut;
+ 	XMLOut.addChild("MapReferenceSettings");
+ 	XMLOut.setTo("MapReferenceSettings");
+ 	XMLOut.addValue("DefaultMap", 0);
+@@ -147,7 +147,7 @@ bool CReferenceMapHandler::ReadFromFile()
+ 	ReferenceNames.clear();
+ 	ReferenceMaps.clear();
+ 
+-	ofXml XMLIn;
++	ofxXmlPoco XMLIn;
+ 	if (!XMLIn.load(refName))
+ 	{
+ 		std::cout << "Could not read " << refName << std::endl;
+diff --git a/src/Games/ReferenceMapHandler.h b/src/Games/ReferenceMapHandler.h
+index daae084..f65e57a 100644
+--- a/src/Games/ReferenceMapHandler.h
++++ b/src/Games/ReferenceMapHandler.h
+@@ -26,6 +26,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ #include <vector>
+ #include <string>
+ 
++#include "ofxXmlPoco.h"
++
+ //! Handles maps for the map game
+ /**  */
+ class CReferenceMapHandler
+diff --git a/src/Games/SandboxScoreTracker.cpp b/src/Games/SandboxScoreTracker.cpp
+index 18eb256..5869b00 100644
+--- a/src/Games/SandboxScoreTracker.cpp
++++ b/src/Games/SandboxScoreTracker.cpp
+@@ -106,7 +106,7 @@ std::string CSandboxScoreTracker::getScoreImage(int idx)
+ 
+ bool CSandboxScoreTracker::SaveScoresXML(std::string &fname)
+ {
+-	ofXml XMLOut;
++	ofxXmlPoco XMLOut;
+ 	XMLOut.addChild("scores");
+ 	XMLOut.setTo("scores");
+ 
+@@ -125,7 +125,7 @@ bool CSandboxScoreTracker::SaveScoresXML(std::string &fname)
+ 
+ bool CSandboxScoreTracker::LoadScoresXML(std::string &fname)
+ {
+-	ofXml XMLIn;
++	ofxXmlPoco XMLIn;
+ 	if (!XMLIn.load(fname))
+ 	{
+ 		std::cout << "Could not read " << fname << std::endl;
+diff --git a/src/Games/SandboxScoreTracker.h b/src/Games/SandboxScoreTracker.h
+index b415469..9b5d0fd 100644
+--- a/src/Games/SandboxScoreTracker.h
++++ b/src/Games/SandboxScoreTracker.h
+@@ -26,6 +26,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ #include <vector>
+ #include <string>
+ 
++#include "ofxXmlPoco.h"
++
+ //! Keeps tracks of scores and hi-score
+ /**  */
+ class CSandboxScoreTracker
+diff --git a/src/KinectProjector/KinectProjector.cpp b/src/KinectProjector/KinectProjector.cpp
+index 84b2a21..f2ff9b5 100644
+--- a/src/KinectProjector/KinectProjector.cpp
++++ b/src/KinectProjector/KinectProjector.cpp
+@@ -674,7 +674,7 @@ void KinectProjector::updateROIFromFile()
+ {
+ 	string settingsFile = "settings/kinectProjectorSettings.xml";
+ 
+-	ofXml xml;
++	ofxXmlPoco xml;
+ 	if (xml.load(settingsFile))
+ 	{
+ 		xml.setTo("KINECTSETTINGS");
+@@ -1872,7 +1872,7 @@ void KinectProjector::saveCalibrationAndSettings()
+ bool KinectProjector::loadSettings(){
+     string settingsFile = "settings/kinectProjectorSettings.xml";
+     
+-    ofXml xml;
++    ofxXmlPoco xml;
+     if (!xml.load(settingsFile))
+         return false;
+     xml.setTo("KINECTSETTINGS");
+@@ -1896,7 +1896,7 @@ bool KinectProjector::saveSettings()
+ {
+     string settingsFile = "settings/kinectProjectorSettings.xml";
+ 
+-    ofXml xml;
++    ofxXmlPoco xml;
+     xml.addChild("KINECTSETTINGS");
+     xml.setTo("KINECTSETTINGS");
+     xml.addValue("kinectROI", kinectROI);
+diff --git a/src/KinectProjector/KinectProjector.h b/src/KinectProjector/KinectProjector.h
+index 5577893..ccb58f5 100644
+--- a/src/KinectProjector/KinectProjector.h
++++ b/src/KinectProjector/KinectProjector.h
+@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ #include "ofxCv.h"
+ #include "KinectGrabber.h"
+ #include "ofxModal.h"
++#include "ofxXmlPoco.h"
+ 
+ #include "KinectProjectorCalibration.h"
+ #include "Utils.h"
+diff --git a/src/KinectProjector/KinectProjectorCalibration.cpp b/src/KinectProjector/KinectProjectorCalibration.cpp
+index a8330f1..5975b0c 100644
+--- a/src/KinectProjector/KinectProjectorCalibration.cpp
++++ b/src/KinectProjector/KinectProjectorCalibration.cpp
+@@ -636,7 +636,7 @@ vector<double> ofxKinectProjectorToolkit::getCalibration()
+ }
+ 
+ bool ofxKinectProjectorToolkit::loadCalibration(string path){
+-    ofXml xml;
++    ofxXmlPoco xml;
+     if (!xml.load(path))
+         return false;
+ 	xml.setTo("RESOLUTIONS");
+@@ -688,7 +688,7 @@ bool ofxKinectProjectorToolkit::loadCalibration(string path){
+ }
+ 
+ bool ofxKinectProjectorToolkit::saveCalibration(string path){
+-    ofXml xml;
++    ofxXmlPoco xml;
+ 	xml.addChild("CALIBRATION");
+ 	xml.setTo("//CALIBRATION");
+ 	xml.addChild("RESOLUTIONS");
+@@ -699,7 +699,7 @@ bool ofxKinectProjectorToolkit::saveCalibration(string path){
+     xml.addChild("PROJCOEFFICIENTS");
+     xml.setTo("PROJCOEFFICIENTS");
+     for (int i=0; i<11; i++) {
+-        ofXml coeff;
++        ofxXmlPoco coeff;
+         coeff.addValue("COEFF"+ofToString(i), projMatrice(i / 4, i % 4));
+         xml.addXml(coeff);
+     }
+@@ -707,7 +707,7 @@ bool ofxKinectProjectorToolkit::saveCalibration(string path){
+     xml.addChild("INTCOEFFICIENTS");
+     xml.setTo("INTCOEFFICIENTS");
+     for (int i=0; i<12; i++) {
+-        ofXml coeff;
++        ofxXmlPoco coeff;
+         coeff.addValue("COEFF"+ofToString(i), intrinsicMatrix(i / 4, i % 4));
+         xml.addXml(coeff);
+     }
+@@ -715,7 +715,7 @@ bool ofxKinectProjectorToolkit::saveCalibration(string path){
+     xml.addChild("EXTCOEFFICIENTS");
+     xml.setTo("EXTCOEFFICIENTS");
+     for (int i=0; i<16; i++) {
+-        ofXml coeff;
++        ofxXmlPoco coeff;
+         coeff.addValue("COEFF"+ofToString(i), extrinsicMatrix(i / 4, i % 4));
+         xml.addXml(coeff);
+     }
+@@ -723,7 +723,7 @@ bool ofxKinectProjectorToolkit::saveCalibration(string path){
+     xml.setTo("//CALIBRATION");
+ 	xml.addChild("DISTCOEFFICIENTS");
+ 	xml.setTo("DISTCOEFFICIENTS");
+-    ofXml coeff;
++    ofxXmlPoco coeff;
+     coeff.addValue("K1", k1);
+     xml.addXml(coeff);
+     coeff.clear();
+diff --git a/src/KinectProjector/KinectProjectorCalibration.h b/src/KinectProjector/KinectProjectorCalibration.h
+index 9cfdaec..8d82a67 100644
+--- a/src/KinectProjector/KinectProjectorCalibration.h
++++ b/src/KinectProjector/KinectProjectorCalibration.h
+@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ #include "ofMain.h"
+ #include "dlib/matrix.h"
+ #include "dlib/matrix/matrix_qr.h"
++#include "ofxXmlPoco.h"
+ 
+ typedef struct
+ {
+diff --git a/src/SandSurfaceRenderer/SandSurfaceRenderer.cpp b/src/SandSurfaceRenderer/SandSurfaceRenderer.cpp
+index f02303b..0310ec9 100644
+--- a/src/SandSurfaceRenderer/SandSurfaceRenderer.cpp
++++ b/src/SandSurfaceRenderer/SandSurfaceRenderer.cpp
+@@ -612,7 +612,7 @@ void SandSurfaceRenderer::onSaveModalEvent(ofxModalEvent e){
+ bool SandSurfaceRenderer::loadSettings(){
+     string settingsFile = "settings/sandSurfaceRendererSettings.xml";
+     
+-    ofXml xml;
++    ofxXmlPoco xml;
+     if (!xml.load(settingsFile))
+         return false;
+     xml.setTo("SURFACERENDERERSETTINGS");
+@@ -626,7 +626,7 @@ bool SandSurfaceRenderer::loadSettings(){
+ bool SandSurfaceRenderer::saveSettings(){
+     string settingsFile = "settings/sandSurfaceRendererSettings.xml";
+ 
+-    ofXml xml;
++    ofxXmlPoco xml;
+     xml.addChild("SURFACERENDERERSETTINGS");
+     xml.setTo("SURFACERENDERERSETTINGS");
+     xml.addValue("colorMapFile", colorMapFile);
+diff --git a/src/SandSurfaceRenderer/SandSurfaceRenderer.h b/src/SandSurfaceRenderer/SandSurfaceRenderer.h
+index 7c0746b..35d7094 100644
+--- a/src/SandSurfaceRenderer/SandSurfaceRenderer.h
++++ b/src/SandSurfaceRenderer/SandSurfaceRenderer.h
+@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ #include "../KinectProjector/KinectProjector.h"
+ #include "ColorMap.h"
+ #include "ofxTexture3d.h"
++#include "ofxXmlPoco.h"
+ 
+ 
+ class SaveModal : public ofxModalWindow
+diff --git a/src/main.cpp b/src/main.cpp
+index 2543add..8afdc00 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -23,6 +23,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ #include "ofMain.h"
+ #include "ofApp.h"
+ 
++#define GLFW_INCLUDE_GLU
++#include <GLFW/glfw3.h>
++
+ const std::string MagicSandVersion = "1.5.4.1";
+ 
+ bool setWindowDimensions(ofGLFWWindowSettings& settings, int windowsNum) {
+@@ -39,14 +42,16 @@ bool setWindowDimensions(ofGLFWWindowSettings& settings, int windowsNum) {
+ 		if (windowsNum == 0)
+ 		{
+ 			// Make main window almost full screen - but just a bit of space around to be able to grab other windows
+-			settings.width = desktopMode->width * 4.0 / 5.0;
+-			settings.height = desktopMode->height * 4.0 / 5.0;
++			settings.setSize(desktopMode->width * 4.0 / 5.0,desktopMode->height * 4.0 / 5.0);			
++			//settings.width = desktopMode->width * 4.0 / 5.0;
++			//settings.height = desktopMode->height * 4.0 / 5.0;
+ 		}
+ 		else
+ 		{
+ 			// Projector window full screen
+-			settings.width = desktopMode->width;
+-			settings.height = desktopMode->height;
++			settings.setSize(desktopMode->width,desktopMode->height);
++			//settings.width = desktopMode->width;
++			//settings.height = desktopMode->height;
+ 		}
+ 
+ 		settings.setPosition(ofVec2f(xM, yM));
+@@ -54,8 +59,9 @@ bool setWindowDimensions(ofGLFWWindowSettings& settings, int windowsNum) {
+ 		return true;
+ 	}
+ 	else {
+-		settings.width = 1600; // Default settings
+-		settings.height = 800;
++		settings.setSize(1600,800);
++		//settings.width = 1600; // Default settings
++		//settings.height = 800;
+ 		settings.setPosition(ofVec2f(0, 0));
+ 		return false;
+ 	}
+@@ -70,17 +76,18 @@ int main(int argc, char *argv[]) {
+ //	setFirstWindowDimensions(settings);
+ 	//settings.width = 1200;
+  //	settings.height = 600;
+-    settings.width = 1600; // Default settings
+-    settings.height = 800;
+-    settings.setPosition(ofVec2f(0, 0));
++	settings.setSize(1600,800);
++    	//settings.width = 1600; // Default settings
++    	//settings.height = 800;
++    	settings.setPosition(ofVec2f(0, 0));
+ 	settings.resizable = true;
+ 	settings.decorated = true;
+ 	settings.title = "Magic-Sand " + MagicSandVersion;
+ 	shared_ptr<ofAppBaseWindow> mainWindow = ofCreateWindow(settings);
+     
+ 	setWindowDimensions(settings, 0);
+-	mainWindow->setWindowPosition(ofGetScreenWidth() / 2 - settings.width / 2, ofGetScreenHeight() / 2 - settings.height / 2);
+-    mainWindow->setWindowShape(settings.width, settings.height);
++	mainWindow->setWindowPosition(ofGetScreenWidth() / 2 - settings.getWidth() / 2, ofGetScreenHeight() / 2 - settings.getHeight() / 2);
++    mainWindow->setWindowShape(settings.getWidth(), settings.getHeight());
+     
+ 	setWindowDimensions(settings, 1);
+ 	settings.resizable = false;
+@@ -90,8 +97,9 @@ int main(int argc, char *argv[]) {
+ 	secondWindow->setVerticalSync(false);
+ 
+ 	setWindowDimensions(settings, 2);
+-	settings.width = 400; // Default settings
+-    settings.height = 200;
++	settings.setSize(400,200);
++	//settings.width = 400; // Default settings
++    	//settings.height = 200;
+ 	settings.resizable = true;
+ 	settings.decorated = true;
+ 	settings.shareContextWith = mainWindow;

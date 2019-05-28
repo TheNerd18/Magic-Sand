@@ -6,3 +6,4 @@ ofxOpenCv
 ofxParagraph
 ofxXmlSettings
 ofxVolumetrics
+ofxPoco

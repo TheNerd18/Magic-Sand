@@ -636,7 +636,7 @@ vector<double> ofxKinectProjectorToolkit::getCalibration()
 }
 
 bool ofxKinectProjectorToolkit::loadCalibration(string path){
-    ofXml xml;
+    ofxXmlPoco xml;
     if (!xml.load(path))
         return false;
 	xml.setTo("RESOLUTIONS");
@@ -688,7 +688,7 @@ bool ofxKinectProjectorToolkit::loadCalibration(string path){
 }
 
 bool ofxKinectProjectorToolkit::saveCalibration(string path){
-    ofXml xml;
+    ofxXmlPoco xml;
 	xml.addChild("CALIBRATION");
 	xml.setTo("//CALIBRATION");
 	xml.addChild("RESOLUTIONS");
@@ -699,7 +699,7 @@ bool ofxKinectProjectorToolkit::saveCalibration(string path){
     xml.addChild("PROJCOEFFICIENTS");
     xml.setTo("PROJCOEFFICIENTS");
     for (int i=0; i<11; i++) {
-        ofXml coeff;
+        ofxXmlPoco coeff;
         coeff.addValue("COEFF"+ofToString(i), projMatrice(i / 4, i % 4));
         xml.addXml(coeff);
     }
@@ -707,7 +707,7 @@ bool ofxKinectProjectorToolkit::saveCalibration(string path){
     xml.addChild("INTCOEFFICIENTS");
     xml.setTo("INTCOEFFICIENTS");
     for (int i=0; i<12; i++) {
-        ofXml coeff;
+        ofxXmlPoco coeff;
         coeff.addValue("COEFF"+ofToString(i), intrinsicMatrix(i / 4, i % 4));
         xml.addXml(coeff);
     }
@@ -715,7 +715,7 @@ bool ofxKinectProjectorToolkit::saveCalibration(string path){
     xml.addChild("EXTCOEFFICIENTS");
     xml.setTo("EXTCOEFFICIENTS");
     for (int i=0; i<16; i++) {
-        ofXml coeff;
+        ofxXmlPoco coeff;
         coeff.addValue("COEFF"+ofToString(i), extrinsicMatrix(i / 4, i % 4));
         xml.addXml(coeff);
     }
@@ -723,7 +723,7 @@ bool ofxKinectProjectorToolkit::saveCalibration(string path){
     xml.setTo("//CALIBRATION");
 	xml.addChild("DISTCOEFFICIENTS");
 	xml.setTo("DISTCOEFFICIENTS");
-    ofXml coeff;
+    ofxXmlPoco coeff;
     coeff.addValue("K1", k1);
     xml.addXml(coeff);
     coeff.clear();

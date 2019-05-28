@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "ofxCv.h"
 #include "KinectGrabber.h"
 #include "ofxModal.h"
+#include "ofxXmlPoco.h"
 
 #include "KinectProjectorCalibration.h"
 #include "Utils.h"
