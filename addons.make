@@ -5,3 +5,5 @@ ofxModal
 ofxOpenCv
 ofxParagraph
 ofxXmlSettings
+ofxVolumetrics
+ofxPoco

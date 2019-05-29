@@ -99,7 +99,7 @@ vector<double> ofxKinectProjectorToolkit::getCalibration()
 }
 
 bool ofxKinectProjectorToolkit::loadCalibration(string path){
-    ofXml xml;
+    ofxXmlPoco xml;
     if (!xml.load(path))
         return false;
 	xml.setTo("RESOLUTIONS");
@@ -120,7 +120,7 @@ bool ofxKinectProjectorToolkit::loadCalibration(string path){
 }
 
 bool ofxKinectProjectorToolkit::saveCalibration(string path){
-    ofXml xml;
+    ofxXmlPoco xml;
 	xml.addChild("CALIBRATION");
 	xml.setTo("//CALIBRATION");
 	xml.addChild("RESOLUTIONS");
