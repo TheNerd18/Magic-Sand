@@ -191,7 +191,8 @@ void SandSurfaceRenderer::setupMesh(){
         {
             ofPoint pt = ofPoint(x+kinectROI.x,y+kinectROI.y,0.0f)-ofPoint(0.5,0.5,0); // We move of a half pixel to center the color pixel (more beautiful)
             mesh.addVertex(pt); // make a new vertex
-            mesh.addTexCoord(pt);
+	    ofVec2f pt_vec = ofVec2f(pt.x,pt.y);
+            mesh.addTexCoord(pt_vec);
         }
     for(unsigned int y=0;y<meshheight-1;y++)
         for(unsigned int x=0;x<meshwidth-1;x++)

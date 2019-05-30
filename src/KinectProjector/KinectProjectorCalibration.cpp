@@ -131,7 +131,7 @@ bool ofxKinectProjectorToolkit::saveCalibration(string path){
 	xml.addChild("COEFFICIENTS");
 	xml.setTo("COEFFICIENTS");
 	for (int i=0; i<11; i++) {
-        ofXml coeff;
+        ofxXmlPoco coeff;
         coeff.addValue("COEFF"+ofToString(i), x(i, 0));
         xml.addXml(coeff);
     }
