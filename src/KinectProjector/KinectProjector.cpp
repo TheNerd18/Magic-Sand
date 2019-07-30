@@ -179,6 +179,7 @@ void KinectProjector::setGradFieldResolution(int sgradFieldResolution){
 // else it would be convenient just to call it in every update
 void KinectProjector::updateStatusGUI()
 {
+	
 	if (kinectOpened)
 	{
 		StatusGUI->getLabel("Kinect Status")->setLabel("Kinect running");
@@ -224,7 +225,7 @@ void KinectProjector::updateStatusGUI()
 	}
 
 	StatusGUI->getLabel("Projector Status")->setLabel("Projector " + ofToString(projRes.x) + " x " + ofToString(projRes.y));
-
+ 
 	std::string AppStatus = "Setup";
 	if (applicationState == APPLICATION_STATE_CALIBRATING)
 		AppStatus = "Calibrating";
@@ -241,6 +242,7 @@ void KinectProjector::updateStatusGUI()
 	gui->getToggle("Quick reaction")->setChecked(followBigChanges);
 	gui->getToggle("Inpaint outliers")->setChecked(doInpainting);
 	gui->getToggle("Full Frame Filtering")->setChecked(doFullFrameFiltering);
+
 }
 
 void KinectProjector::update()
@@ -705,6 +707,7 @@ void KinectProjector::setNewKinectROI()
     saveCalibrationAndSettings();
     updateKinectGrabberROI(kinectROI);
 	updateStatusGUI();
+
 }
 
 void KinectProjector::updateKinectGrabberROI(ofRectangle ROI){

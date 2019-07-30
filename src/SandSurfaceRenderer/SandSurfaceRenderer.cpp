@@ -190,10 +190,15 @@ void SandSurfaceRenderer::setupMesh(){
         for(unsigned int x=0;x<meshwidth;x++)
         {
             ofPoint pt = ofPoint(x+kinectROI.x,y+kinectROI.y,0.0f)-ofPoint(0.5,0.5,0); // We move of a half pixel to center the color pixel (more beautiful)
-            mesh.addVertex(pt); // make a new vertex
-	    ofVec2f pt_vec = ofVec2f(pt.x,pt.y);
-            mesh.addTexCoord(pt_vec);
+
+            //ofVec3f pt_t_vec = ofVec3f(pt.x, pt.y, pt.z);
+            ofVec2f pt_vec = ofVec2f(pt.x,pt.y);
+
+
+            mesh.addVertex(pt); // make a new vertex //pt
+            mesh.addTexCoord(pt_vec); //pt_vec
         }
+
     for(unsigned int y=0;y<meshheight-1;y++)
         for(unsigned int x=0;x<meshwidth-1;x++)
         {
@@ -254,7 +259,7 @@ void SandSurfaceRenderer::drawProjectorWindow(){
 void SandSurfaceRenderer::drawSandbox() {
     fboProjWindow.begin();
     ofBackground(0);
-    kinectProjector->bind();
+    kinectProjector->bind(); //Binds OfxCvImage, appears fine
     heightMapShader.begin();
     heightMapShader.setUniformMatrix4f("kinectProjMatrix",transposedKinectProjMatrix);
     heightMapShader.setUniformMatrix4f("kinectWorldMatrix",transposedKinectWorldMatrix);

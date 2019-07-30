@@ -19,6 +19,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 ***********************************************************************/
 
+#include <ofVec2f.h>
 #include "KinectGrabber.h"
 #include "ofConstants.h"
 
@@ -98,18 +99,18 @@ void KinectGrabber::setupFramefilter(int sgradFieldresolution, float newMaxOffse
     minInitFrame = 60;
     
     //Setup ROI
-    setKinectROI(ROI);
+    setKinectROI(ROI); //this includes a call to resetBuffers, which includes a call to initiateBuffers, so the next line isn't necessary?
     
     //setting buffers
-	initiateBuffers();
+	//initiateBuffers();
 }
 
 void KinectGrabber::initiateBuffers(void){
 	filteredframe.set(0);
-
+ this->buffersLock.lock();
     averagingBuffer=new float[numAveragingSlots*height*width];
     float* averagingBufferPtr=averagingBuffer;
-    for(int i=0;i<numAveragingSlots;++i)
+    for(unsigned int i=0;i<numAveragingSlots;++i)
         for(unsigned int y=0;y<height;++y)
             for(unsigned int x=0;x<width;++x,++averagingBufferPtr)
                 *averagingBufferPtr=initialValue;
@@ -121,7 +122,7 @@ void KinectGrabber::initiateBuffers(void){
     float* sbPtr=statBuffer;
     for(unsigned int y=0;y<height;++y)
         for(unsigned int x=0;x<width;++x)
-            for(int i=0;i<3;++i,++sbPtr)
+            for(unsigned int i=0;i<3;++i,++sbPtr)
                 *sbPtr=0.0;
     
     /* Initialize the valid buffer: */
@@ -132,7 +133,7 @@ void KinectGrabber::initiateBuffers(void){
             *vbPtr=initialValue;
     
     /* Initialize the gradient field buffer: */
-    gradField = new ofVec2f[gradFieldcols*gradFieldrows];
+    gradField = new ofVec2f[gradFieldcols*gradFieldrows]; //new ofVec2f
     ofVec2f* gfPtr=gradField;
     for(unsigned int y=0;y<gradFieldrows;++y)
         for(unsigned int x=0;x<gradFieldcols;++x,++gfPtr)
@@ -141,29 +142,41 @@ void KinectGrabber::initiateBuffers(void){
     bufferInitiated = true;
     currentInitFrame = 0;
     firstImageReady = false;
+     this->buffersLock.unlock();
 }
 
 void KinectGrabber::resetBuffers(void){
     if (bufferInitiated){
         bufferInitiated = false;
+        this->buffersLock.lock();
         delete[] averagingBuffer;
         delete[] statBuffer;
         delete[] validBuffer;
         delete[] gradField;
+        this->buffersLock.unlock();
     }
     initiateBuffers();
 }
 
 void KinectGrabber::threadedFunction() {
 	while(isThreadRunning()) {
-        this->actionsLock.lock(); // Update the grabber state if needed
+         this->actionsLock.lock(); // Update the grabber state if needed
+ //         this->buffersLock.lock();
+       //for(std::vector<std::function<void(KinectGrabber&)>>::iterator it = actions.begin(); it != actions.end(); ++it) {
+       //     auto action = *it;
+       //     action(*this);
+
         for(auto & action : this->actions) {
-            action(*this);
+                  action(*this);
         }
+ //       this->buffersLock.unlock();
+         this->actionsLock.unlock();
+
+       this->actionsLock.lock(); // Update the grabber state if needed
         this->actions.clear();
         this->actionsLock.unlock();
-        
-        kinect.update();
+
+        kinect.update(); 
         if(kinect.isFrameNew()){
             kinectDepthImage = kinect.getRawDepthPixels();
             filter();
@@ -173,9 +186,12 @@ void KinectGrabber::threadedFunction() {
         }
         if (storedframes == 0)
         {
+//            this->buffersLock.lock();
             filtered.send(std::move(filteredframe));
 			gradient.send(std::move(gradField));
             colored.send(std::move(kinectColorImage.getPixels()));
+//            this->buffersLock.unlock();
+
             lock();
             storedframes += 1;
             unlock();
@@ -197,6 +213,7 @@ void KinectGrabber::performInThread(std::function<void(KinectGrabber&)> action) 
 
 void KinectGrabber::filter()
 {
+     this->buffersLock.lock();
 	if (bufferInitiated && numAveragingSlots < 2)
 	{
 		// Just copy raw kinect data
@@ -330,10 +347,12 @@ void KinectGrabber::filter()
             applySpaceFilter();
         }
 	}
+     this->buffersLock.unlock();
 }
 
 void KinectGrabber::setFullFrameFiltering(bool ff, ofRectangle ROI)
 {
+     this->buffersLock.lock();
 	doFullFrameFiltering = ff;
 	if (ff)
 	{
@@ -358,6 +377,7 @@ void KinectGrabber::setFullFrameFiltering(bool ff, ofRectangle ROI)
 		}
 
 	}
+     this->buffersLock.unlock();
 }
 
 void KinectGrabber::applySpaceFilter()
@@ -424,6 +444,7 @@ void KinectGrabber::updateGradientField()
     int gvx, gvy;
     float lgth = 0;
     float* filteredFramePtr=filteredframe.getData();
+    this->buffersLock.lock();
     for(unsigned int y=0;y<gradFieldrows;++y) {
         for(unsigned int x=0;x<gradFieldcols;++x) {
             if (isInsideROI(x*gradFieldresolution, y*gradFieldresolution) && isInsideROI((x+1)*gradFieldresolution, (y+1)*gradFieldresolution) ){
@@ -454,6 +475,7 @@ void KinectGrabber::updateGradientField()
             }
         }
     }
+     this->buffersLock.unlock();
 }
 
 
@@ -491,6 +513,7 @@ float KinectGrabber::findInpaintValue(float *data, int x, int y)
 
 void KinectGrabber::applySimpleOutlierInpainting()
 {
+ this->buffersLock.lock();
 	float *data = filteredframe.getData();
 
 	// Estimate overall average inside ROI
@@ -546,6 +569,7 @@ void KinectGrabber::applySimpleOutlierInpainting()
 			}
 		}
 	}
+     this->buffersLock.unlock();
 }
 
 bool KinectGrabber::isInsideROI(int x, int y){
@@ -555,6 +579,7 @@ bool KinectGrabber::isInsideROI(int x, int y){
 }
 
 void KinectGrabber::setKinectROI(ofRectangle ROI){
+
 	if (doFullFrameFiltering)
 	{
 		minX = 0;
@@ -576,44 +601,27 @@ void KinectGrabber::setKinectROI(ofRectangle ROI){
 	}
     //ROIwidth = maxX-minX;
     //ROIheight = maxY-minY;
+    //performInThread(&KinectGrabber::resetBuffers);
     resetBuffers();
 }
 
 void KinectGrabber::setAveragingSlotsNumber(int snumAveragingSlots){
-    if (bufferInitiated){
-            bufferInitiated = false;
-            delete[] averagingBuffer;
-            delete[] statBuffer;
-            delete[] validBuffer;
-            delete[] gradField;
-        }
     numAveragingSlots = snumAveragingSlots;
     minNumSamples=(numAveragingSlots+1)/2;
-    initiateBuffers();
+    //performInThread(&KinectGrabber::resetBuffers);
+    resetBuffers();
 }
 
 void KinectGrabber::setGradFieldResolution(int sgradFieldresolution){
-    if (bufferInitiated){
-        bufferInitiated = false;
-        delete[] averagingBuffer;
-        delete[] statBuffer;
-        delete[] validBuffer;
-        delete[] gradField;
-    }
     gradFieldresolution = sgradFieldresolution;
-    initiateBuffers();
+    //performInThread(&KinectGrabber::resetBuffers);
+    resetBuffers();
 }
 
 void KinectGrabber::setFollowBigChange(bool newfollowBigChange){
-    if (bufferInitiated){
-        bufferInitiated = false;
-        delete[] averagingBuffer;
-        delete[] statBuffer;
-        delete[] validBuffer;
-        delete[] gradField;
-    }
     followBigChange = newfollowBigChange;
-    initiateBuffers();
+    //performInThread(&KinectGrabber::resetBuffers);
+    resetBuffers();
 }
 
 ofVec3f KinectGrabber::getStatBuffer(int x, int y){

@@ -1,0 +1,3 @@
+/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/CMakeFiles/Magic_Sand.dir
+/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/CMakeFiles/edit_cache.dir

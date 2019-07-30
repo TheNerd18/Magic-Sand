@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Magic_Sand"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Magic_Sand">
+				<Option output="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Magic_Sand" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/."/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/geometry"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/interfaces"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/memory_manager_stateless"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/unicode"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/SandSurfaceRenderer"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/../../../libs/openFrameworks/math"/>
+					<Add directory="/usr/include/c++/6"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/6"/>
+					<Add directory="/usr/include/c++/6/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 Magic_Sand"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Magic_Sand/fast">
+				<Option output="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Magic_Sand" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/."/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/geometry"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/interfaces"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/memory_manager_stateless"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/unicode"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/SandSurfaceRenderer"/>
+					<Add directory="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/../../../libs/openFrameworks/math"/>
+					<Add directory="/usr/include/c++/6"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/6"/>
+					<Add directory="/usr/include/c++/6/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 Magic_Sand/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games/BoidGameController.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games/BoidGameController.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games/MapGameController.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games/MapGameController.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games/ReferenceMapHandler.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games/ReferenceMapHandler.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games/SandboxScoreTracker.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games/SandboxScoreTracker.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games/vehicle.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/Games/vehicle.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/KinectGrabber.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/KinectGrabber.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjector.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjectorCalibration.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/KinectProjectorCalibration.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/TemporalFrameFilter.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/TemporalFrameFilter.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/Utils.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/algs.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/dassert.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/enable_if.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/error.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/geometry/border_enumerator.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/geometry/border_enumerator_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/geometry/rectangle.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/geometry/rectangle_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/geometry/vector.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/geometry/vector_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/interfaces/cmd_line_parser_option.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/interfaces/enumerable.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/interfaces/map_pair.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/interfaces/remover.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/is_kind.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/cblas_constants.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/fortran_id.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/gees.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/geev.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/geqrf.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/gesdd.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/gesvd.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/getrf.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/ormqr.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/potrf.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/syev.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/lapack/syevr.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_assign.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_assign_fwd.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_blas_bindings.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_cholesky.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_conj_trans.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_conv.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_conv_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_data_layout.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_data_layout_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_default_mul.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_eigenvalue.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_exp.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_exp_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_expressions.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_fwd.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_la.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_la_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_lu.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_math_functions.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_math_functions_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_op.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_qr.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_subexp.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_subexp_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_trsm.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_utilities.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/matrix_utilities_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/symmetric_matrix_cache.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/matrix/symmetric_matrix_cache_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/memory_manager_stateless/memory_manager_stateless_kernel_1.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/memory_manager_stateless/memory_manager_stateless_kernel_2.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/memory_manager_stateless/memory_manager_stateless_kernel_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/noncopyable.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/platform.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/serialize.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/stack_trace.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/uintn.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/unicode.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/unicode/unicode.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/unicode/unicode.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/unicode/unicode_abstract.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/KinectProjector/libs/dlib/windows_magic.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/SandSurfaceRenderer/ColorMap.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/SandSurfaceRenderer/ColorMap.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/SandSurfaceRenderer/SandSurfaceRenderer.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/SandSurfaceRenderer/SandSurfaceRenderer.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/main.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/ofApp.cpp">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/src/ofApp.h">
+			<Option target="Magic_Sand"/>
+		</Unit>
+		<Unit filename="/home/sandbox/Desktop/489/OFX_v10.1_GCC6/apps/myApps/Magic-Sand/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

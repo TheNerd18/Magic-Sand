@@ -122,8 +122,9 @@ private:
     
     // Thread lambda functions (actions)
 	vector<std::function<void(KinectGrabber&)> > actions;
-	ofMutex actionsLock;
-    
+    std::mutex actionsLock;
+    std::mutex buffersLock; //Simon
+
     // Kinect parameters
 	bool kinectOpened;
     ofxKinect               kinect;
