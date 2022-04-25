@@ -150,7 +150,6 @@ private:
     float elevationMin, elevationMax;
     
     ofxTexture3d colourTexture;
-    
     // Contourlines
     float contourLineDistance, contourLineFactor;
     bool drawContourLines; // Flag if topographic contour lines are enabled

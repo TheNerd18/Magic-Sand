@@ -1,9 +1,11 @@
 ofxCv
 ofxDatGui
+ofxGui
 ofxKinect
 ofxModal
 ofxOpenCv
 ofxParagraph
-ofxXmlSettings
 ofxVolumetrics
+ofxXmlSettings
+ofxTween
 ofxPoco

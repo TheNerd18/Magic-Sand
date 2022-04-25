@@ -100,7 +100,8 @@ void SandSurfaceRenderer::setup(bool sdisplayGui, std::string texture_basename){
         }
     }
 
-    colourTexture.allocate(volWidth, volHeight, volDepth, GL_RGBA, GL_LINEAR);
+    //colourTexture.allocate(volWidth, volHeight, volDepth, GL_RGBA, GL_LINEAR);
+    colourTexture.allocate(volWidth, volHeight, volDepth, GL_RGBA);//GL_LINEAR);
     colourTexture.loadData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0, GL_RGBA);
 
     fbo3dTextureTestWindow.allocate(projResX, projResY, GL_RGBA);
@@ -258,8 +259,9 @@ void SandSurfaceRenderer::setupMesh(){
         for(unsigned int x=0;x<meshwidth;x++)
         {
             ofPoint pt = ofPoint(x+kinectROI.x,y+kinectROI.y,0.0f)-ofPoint(0.5,0.5,0); // We move of a half pixel to center the color pixel (more beautiful)
+            glm::vec2 pt2d = glm::vec2(x+kinectROI.x,y+kinectROI.y) - glm::vec2(0.5,0.5); 
             mesh.addVertex(pt); // make a new vertex
-            mesh.addTexCoord(pt);
+            mesh.addTexCoord(pt2d);
         }
     for(unsigned int y=0;y<meshheight-1;y++)
         for(unsigned int x=0;x<meshwidth-1;x++)
