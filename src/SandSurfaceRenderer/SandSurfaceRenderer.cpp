@@ -41,9 +41,6 @@ SandSurfaceRenderer::SandSurfaceRenderer(std::shared_ptr<KinectProjector> const&
 }
 
 void SandSurfaceRenderer::changeVisualisation(int value){
-    std::string str = __builtin_FUNCTION();
-        
-
     vector<std::string> visualisations = {"layerImages/brain/","layerImages/europe/","layerImages/globaltemp/"};
     
     int startingPos;
