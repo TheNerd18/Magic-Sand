@@ -42,9 +42,15 @@ SandSurfaceRenderer::SandSurfaceRenderer(std::shared_ptr<KinectProjector> const&
 
 void SandSurfaceRenderer::changeVisualisation(int value){
     std::string str = __builtin_FUNCTION();
-        
+    
+    if(value == 3){
+        std::string cmd = "python3 /home/sarndbox/Desktop/OFX_v0.9.8_2022/apps/myApps/Magic-Sand-jaymatt/src/CustomImageCreator/createCustom.py";
+        const char *command = cmd.c_str();
+        system(command);
+    }
 
-    vector<std::string> visualisations = {"layerImages/brain/","layerImages/europe/","layerImages/globaltemp/"};
+
+    vector<std::string> visualisations = {"layerImages/brain/","layerImages/europe/","layerImages/globaltemp/", "layerImages/custom/"};
     
     int startingPos;
     int numDigits;
@@ -65,6 +71,10 @@ void SandSurfaceRenderer::changeVisualisation(int value){
         case 2:
             startingPos = 1884;
             numDigits = 4;
+            break;
+        case 3:
+            startingPos = 0;
+            numDigits = 2;
             break;
     }
 
