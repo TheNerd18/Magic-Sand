@@ -32,16 +32,48 @@ using namespace ofxCSG;
 SandSurfaceRenderer::SandSurfaceRenderer(std::shared_ptr<KinectProjector> const& k,
     std::shared_ptr<ofAppBaseWindow> const& p,
     std::shared_ptr<ofAppBaseWindow> const& e)
-:settingsLoaded(false),
-editColorMap(false){
+    :settingsLoaded(false),
+    editColorMap(false){
     kinectProjector = k;
     projWindow = p;
     extraWindow = e;
+    kinectProjector->setSandRendererReference(this);
 }
 
-void SandSurfaceRenderer::setup(bool sdisplayGui, std::string texture_basename){
-    ofAddListener(ofEvents().exit, this, &SandSurfaceRenderer::exit);
+void SandSurfaceRenderer::changeVisualisation(int value){
+    std::string str = __builtin_FUNCTION();
+        
+
+    vector<std::string> visualisations = {"layerImages/brain/","layerImages/europe/","layerImages/globaltemp/"};
     
+    int startingPos;
+    int numDigits;
+
+    std::string path = visualisations[value];
+    ofLogVerbose("SandSurface") <<path;
+    switch(value){
+        case 0:
+            startingPos = 18;
+            numDigits = 2;
+            break;
+
+        case 1:
+            startingPos = 1;
+            numDigits = 4;
+            break;
+
+        case 2:
+            startingPos = 1884;
+            numDigits = 4;
+            break;
+    }
+
+    setup(true, path, numDigits, startingPos);
+}
+
+void SandSurfaceRenderer::setup(bool sdisplayGui, std::string texture_basename, int numDigits, int startingPos){
+    ofAddListener(ofEvents().exit, this, &SandSurfaceRenderer::exit);
+
     // Sandbox contourlines
     drawContourLines = true; // Flag if topographic contour lines are enabled
 	contourLineDistance = 10.0; // Elevation distance between adjacent topographic contour lines in millimiters
@@ -70,7 +102,7 @@ void SandSurfaceRenderer::setup(bool sdisplayGui, std::string texture_basename){
     ofxImageSequencePlayer imageSequence;
     
     //imageSequence.init("colour_texture_split/colour_text",3,".tif", 0);
-    imageSequence.init(texture_basename,6,".tif", 0);
+    imageSequence.init(texture_basename,numDigits,".tif", startingPos);
     int volWidth = imageSequence.getWidth();
     int volHeight = imageSequence.getHeight();
     int volDepth = imageSequence.getSequenceLength();
@@ -100,7 +132,7 @@ void SandSurfaceRenderer::setup(bool sdisplayGui, std::string texture_basename){
         }
     }
 
-    colourTexture.allocate(volWidth, volHeight, volDepth, GL_RGBA, GL_LINEAR);
+    colourTexture.allocate(volWidth, volHeight, volDepth, GL_RGBA);//GL_LINEAR);
     colourTexture.loadData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0, GL_RGBA);
 
     fbo3dTextureTestWindow.allocate(projResX, projResY, GL_RGBA);
@@ -612,7 +644,7 @@ void SandSurfaceRenderer::onSaveModalEvent(ofxModalEvent e){
 bool SandSurfaceRenderer::loadSettings(){
     string settingsFile = "settings/sandSurfaceRendererSettings.xml";
     
-    ofxXmlPoco xml;
+    ofXml xml;
     if (!xml.load(settingsFile))
         return false;
     xml.setTo("SURFACERENDERERSETTINGS");
@@ -626,7 +658,7 @@ bool SandSurfaceRenderer::loadSettings(){
 bool SandSurfaceRenderer::saveSettings(){
     string settingsFile = "settings/sandSurfaceRendererSettings.xml";
 
-    ofxXmlPoco xml;
+    ofXml xml;
     xml.addChild("SURFACERENDERERSETTINGS");
     xml.setTo("SURFACERENDERERSETTINGS");
     xml.addValue("colorMapFile", colorMapFile);

@@ -38,7 +38,8 @@ void ofApp::setup() {
 	
 	// Setup sandSurfaceRenderer
 	sandSurfaceRenderer = new SandSurfaceRenderer(kinectProjector, projWindow, extraWindow);
-	sandSurfaceRenderer->setup(true, texture_basename);
+	//sandSurfaceRenderer->setup(true, texture_basename);
+	sandSurfaceRenderer->changeVisualisation(2);
 	
 	// Retrieve variables
 	ofVec2f kinectRes = kinectProjector->getKinectRes();

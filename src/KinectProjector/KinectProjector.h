@@ -25,16 +25,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #define __GreatSand__KinectProjector__
 
 #include <iostream>
+#include "opencv2/opencv.hpp"  //Add for Status issue X11
 #include "ofMain.h"
 #include "ofxOpenCv.h"
 #include "ofxCv.h"
 #include "KinectGrabber.h"
 #include "ofxModal.h"
-#include "ofxXmlPoco.h"
 
 #include "KinectProjectorCalibration.h"
 #include "Utils.h"
 #include "TemporalFrameFilter.h"
+
+class SandSurfaceRenderer;
 
 class ofxModalThemeProjKinect : public ofxModalTheme {
 public:
@@ -49,6 +51,9 @@ public:
 class KinectProjector {
 public:
     KinectProjector(std::shared_ptr<ofAppBaseWindow> const& p);
+
+    //set reference to sandsurfacerenderer to allow changing visualisations
+    void setSandRendererReference(SandSurfaceRenderer* r);
     
     // Running loop functions
     void setup(bool sdisplayGui);
@@ -97,6 +102,7 @@ public:
     void onSliderEvent(ofxDatGuiSliderEvent e);
     void onConfirmModalEvent(ofxModalEvent e);
     void onCalibModalEvent(ofxModalEvent e);
+    void onDropdownEvent(ofxDatGuiDropdownEvent e);
 
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
@@ -191,6 +197,8 @@ public:
 	void SaveKinectColorImage();
 
 private:
+
+    SandSurfaceRenderer* rendererReference;
 
     enum Calibration_state
     {

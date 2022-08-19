@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #ifndef _MapGameController_h_
 #define _MapGameController_h_
 
+#include "opencv2/opencv.hpp"  //Add for Status issue X11
 #include "ofxOpenCv.h"
 #include "ofxCv.h"
 #include "ReferenceMapHandler.h"

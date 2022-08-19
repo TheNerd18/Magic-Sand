@@ -20,6 +20,7 @@ General Public License for more details.
 ***********************************************************************/
 
 #pragma once
+#include "opencv2/opencv.hpp"  //Add for Status issue X11
 #include "ofMain.h"
 #include "ofxOpenCv.h"
 #include "ofxCv.h"

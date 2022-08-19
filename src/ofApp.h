@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #pragma once
 
+#include "opencv2/opencv.hpp"  //Add for Status issue X11
 #include "ofMain.h"
 #include "ofxDatGui.h"
 #include "KinectProjector/KinectProjector.h"

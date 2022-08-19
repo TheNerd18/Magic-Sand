@@ -21,6 +21,7 @@ with the Magic Sand; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ***********************************************************************/
 
+#include "SandSurfaceRenderer/SandSurfaceRenderer.h"
 #include "KinectProjector.h"
 #include <sstream>
 
@@ -47,6 +48,10 @@ drawKinectColorView(true)
 	TemporalFilteringType = 1;
 	DumpDebugFiles = true;
 	DebugFileOutDir = "DebugFiles//";
+}
+
+void KinectProjector::setSandRendererReference(SandSurfaceRenderer* r){
+	rendererReference = r;
 }
 
 void KinectProjector::setup(bool sdisplayGui)
@@ -674,7 +679,7 @@ void KinectProjector::updateROIFromFile()
 {
 	string settingsFile = "settings/kinectProjectorSettings.xml";
 
-	ofxXmlPoco xml;
+	ofXml xml;
 	if (xml.load(settingsFile))
 	{
 		xml.setTo("KINECTSETTINGS");
@@ -1407,11 +1412,21 @@ ofVec2f KinectProjector::gradientAtKinectCoord(float x, float y){
 void KinectProjector::setupGui(){
     // instantiate and position the gui //
     gui = new ofxDatGui( ofxDatGuiAnchor::TOP_RIGHT );
+
+	vector<string> visualisations = {"brain", "europe", "globaltemp", "custom"};
+
+	//add a folder for run options (which visualisation)
 	gui->addButton("RUN!")->setName("Start Application");
+	gui->addBreak();
+
+	auto visDropdown = gui->addDropdown("Visualisation",visualisations);
+	visDropdown->onDropdownEvent(this, &KinectProjector::onDropdownEvent);
+
 	gui->addBreak();
     gui->addFRM();
 	fpsKinectText = gui->addTextInput("Kinect FPS", "0");
-    gui->addBreak();
+
+	gui->addBreak();
     
     auto advancedFolder = gui->addFolder("Advanced", ofColor::purple);
     advancedFolder->addToggle("Display kinect depth view", drawKinectView)->setName("Draw kinect depth view");
@@ -1662,6 +1677,11 @@ void KinectProjector::setFollowBigChanges(bool sfollowBigChanges){
 	updateStatusGUI();
 }
 
+void KinectProjector::onDropdownEvent(ofxDatGuiDropdownEvent e){
+	ofLogVerbose("KinectProjector") <<"Change Visual";
+	rendererReference->changeVisualisation(e.child);
+}
+
 void KinectProjector::onButtonEvent(ofxDatGuiButtonEvent e){
     if (e.target->is("Full Calibration")) {
         startFullCalibration();
@@ -1872,7 +1892,7 @@ void KinectProjector::saveCalibrationAndSettings()
 bool KinectProjector::loadSettings(){
     string settingsFile = "settings/kinectProjectorSettings.xml";
     
-    ofxXmlPoco xml;
+    ofXml xml;
     if (!xml.load(settingsFile))
         return false;
     xml.setTo("KINECTSETTINGS");
@@ -1896,7 +1916,7 @@ bool KinectProjector::saveSettings()
 {
     string settingsFile = "settings/kinectProjectorSettings.xml";
 
-    ofxXmlPoco xml;
+    ofXml xml;
     xml.addChild("KINECTSETTINGS");
     xml.setTo("KINECTSETTINGS");
     xml.addValue("kinectROI", kinectROI);

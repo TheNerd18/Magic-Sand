@@ -27,16 +27,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #define __GreatSand__SandSurfaceRenderer__
 
 #include <iostream>
+#include "opencv2/opencv.hpp"  //Add for Status issue X11
 #include "ofMain.h"
 #include "../KinectProjector/KinectProjector.h"
 #include "ColorMap.h"
 #include "ofxTexture3d.h"
-#include "ofxXmlPoco.h"
 
 
 class SaveModal : public ofxModalWindow
 {
 public:
+    void changeVisualisation(int value);
+
     SaveModal(std::shared_ptr<ofxModalTheme> theme){
         setTheme(theme);
         setTitle("Save Color Map File");
@@ -69,8 +71,10 @@ public:
     SandSurfaceRenderer(std::shared_ptr<KinectProjector> const& k, std::shared_ptr<ofAppBaseWindow> const& p,
         std::shared_ptr<ofAppBaseWindow> const& e);
     
+    void changeVisualisation(int value);
+
     // Main loop function
-    void setup(bool sdisplayGui, std::string texture_basename);
+    void setup(bool sdisplayGui, std::string texture_basename, int numDigits, int startingPos);
     void update();
     void drawMainWindow(float x, float y, float width, float height);
     void drawProjectorWindow();

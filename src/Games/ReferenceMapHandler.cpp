@@ -118,7 +118,7 @@ bool CReferenceMapHandler::WriteToFile()
 {
 	std::string refName = "mapGame/ReferenceData/MapReferenceSettings.xml";
 
-	ofxXmlPoco XMLOut;
+	ofXml XMLOut;
 	XMLOut.addChild("MapReferenceSettings");
 	XMLOut.setTo("MapReferenceSettings");
 	XMLOut.addValue("DefaultMap", 0);
@@ -147,7 +147,7 @@ bool CReferenceMapHandler::ReadFromFile()
 	ReferenceNames.clear();
 	ReferenceMaps.clear();
 
-	ofxXmlPoco XMLIn;
+	ofXml XMLIn;
 	if (!XMLIn.load(refName))
 	{
 		std::cout << "Could not read " << refName << std::endl;

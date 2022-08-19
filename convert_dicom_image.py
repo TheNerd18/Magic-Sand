@@ -4,29 +4,31 @@ import dicom
 import glob
 import numpy as np
 import os
-import Tkinter, tkFileDialog
+#import tkinter, tkFileDialog
 import time
 
 import skimage.io as io
 
 from operator import itemgetter
 
-while True:
-	dirname = raw_input("Type new directory name: ")
+#while True:
+#	dirname = raw_input("Type new directory name: ")
+#
+#	if os.path.exists("bin/data/" + dirname):
+#		print("Directory already exists, choose another name")
+#	else:
+#		os.mkdir("bin/data/" + dirname)
+#		break
 
-	if os.path.exists("bin/data/" + dirname):
-		print("Directory already exists, choose another name")
-	else:
-		os.mkdir("bin/data/" + dirname)
-		break
-
-root = Tkinter.Tk()
-root.withdraw()
+#root = tkinter.Tk()
+#root.withdraw()
 
 # Browse to directory containing dicom images
-file_path = tkFileDialog.askdirectory()
+#file_path = tkFileDialog.askdirectory()
 #file_path = "/home/vrterra/Desktop/REMBRANDT/900-00-1961/06-19-2005-04452/4-32199"
 #file_path = "/home/vrterra/Desktop/CT Lymph Nodes/ABD_LYMPH_001/09-14-2014-ABDLYMPH001-abdominallymphnodes-30274/abdominallymphnodes-26828"
+dir_name = "medData"
+file_path="/home/sarndbox/Desktop/489/medData/CQ500CT0 CQ500CT0/Unknown Study/CT 4cc sec 150cc D3D on-3"
 start_time = time.time()
 
 dicom_files = glob.glob(file_path + "/*.dcm")
@@ -89,4 +91,5 @@ for idx, s_idx in enumerate(echo2_img_idx):
 	#io.show()
 	io.imsave("bin/data/" + dirname + "/img_{0:06}.tif".format(idx), (img*(255*255)).astype(np.uint16))
 
-print "Processing time = {} seconds".format(time.time() - start_time) 
+#print()
+##print("Processing time = %d seconds", %(time.time() - start_time))
